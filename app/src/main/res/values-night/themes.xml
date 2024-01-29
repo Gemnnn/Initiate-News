@@ -2,6 +2,17 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.InitiateNews" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color-->
+        <item name="colorSecondary">@color/SecondPrimary</item>
+        <item name="colorSecondaryVariant">@color/SecondPrimary</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Status bar color-->
+        <item name="android:statusBarColor">@color/primary</item>
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
 </resources>
