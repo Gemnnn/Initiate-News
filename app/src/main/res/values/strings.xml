@@ -10,4 +10,17 @@
     <string name="account">Account</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+
+
+
+    <!-- News View -->
+    <string name="lbns">LBNS</string>
+
+    <!-- Search View -->
+    <string name="addkeyword">Add Keyword</string>
+
+    <!-- User View -->
+    <string name="preference">Preference</string>
 </resources>
