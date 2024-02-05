@@ -20,11 +20,13 @@
             
         </RelativeLayout>
         <androidx.appcompat.widget.AppCompatButton
+            android:layout_margin="10dp"
             android:id="@+id/btn_set_preference"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@+id/account_iv_profile"
+            android:background="@color/primary"
             android:text="@string/preference" />
 
     </LinearLayout>
