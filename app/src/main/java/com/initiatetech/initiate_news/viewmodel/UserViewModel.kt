@@ -1,5 +1,6 @@
 package com.initiatetech.initiate_news.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,12 +24,14 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     fun loginUser(email: String, password: String) {
         val loginInfo = User(email, password) // Assuming UserLogin is similar or use User directly if same attributes
-
+        Log.d("Login", "Start")
         userRepository.loginUser(loginInfo).enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 if (response.isSuccessful && response.body()?.isSuccess == true) {
+                    Log.d("Login", "success")
                     _loginStatus.value = LoginStatus.SUCCESS
                 } else {
+                    Log.d("Login", "fail")
                     _loginStatus.value = LoginStatus.FAILURE
                 }
             }
