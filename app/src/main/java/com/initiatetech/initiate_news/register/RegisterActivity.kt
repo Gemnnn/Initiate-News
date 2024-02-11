@@ -1,6 +1,8 @@
 package com.initiatetech.initiate_news.register
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.widget.EditText
 import android.widget.Toast
@@ -9,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
 import com.initiatetech.initiate_news.R
+import com.initiatetech.initiate_news.login.LoginActivity
 import com.initiatetech.initiate_news.repository.UserRepository
 import com.initiatetech.initiate_news.viewmodel.UserViewModel
 
@@ -18,6 +21,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var registerButton: MaterialButton
+    private lateinit var cancelButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +34,15 @@ class RegisterActivity : AppCompatActivity() {
         emailEditText = findViewById(R.id.editTextEmail)
         passwordEditText = findViewById(R.id.editTextPassword)
         registerButton = findViewById(R.id.buttonRegister)
+        cancelButton = findViewById(R.id.buttonCancelRegister)
 
         registerButton.setOnClickListener {
             registerUser()
+        }
+
+        cancelButton.setOnClickListener {
+            Log.d("Registration", "Cancelled")
+            navigateToLoginActivity()
         }
 
         observeRegistrationStatus()
@@ -59,6 +69,7 @@ class RegisterActivity : AppCompatActivity() {
             when (status) {
                 UserViewModel.RegistrationStatus.SUCCESS -> {
                     Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
+                    navigateToLoginActivity()
                 }
                 UserViewModel.RegistrationStatus.FAILURE -> {
                     Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show()
@@ -68,5 +79,11 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun navigateToLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        Log.d("Registration", "navigated to login")
     }
 }

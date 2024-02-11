@@ -44,12 +44,14 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     fun registerUser(email: String, password: String) {
         val newUser = User(email, password) // Corrected to create a new User instance
-
+        Log.d("Registration", "Start")
         userRepository.registerUser(newUser).enqueue(object : Callback<ApiResponse> { // Corrected to pass newUser
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 if (response.isSuccessful && response.body()?.isSuccess == true) {
+                    Log.d("Registration", "success")
                     _registrationStatus.value = RegistrationStatus.SUCCESS
                 } else {
+                    Log.d("Registration", "fail")
                     _registrationStatus.value = RegistrationStatus.FAILURE
                 }
             }
