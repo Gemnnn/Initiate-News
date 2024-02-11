@@ -1,11 +1,15 @@
 package com.initiatetech.initiate_news.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.button.MaterialButton
 import com.initiatetech.initiate_news.R
+import com.initiatetech.initiate_news.login.LoginActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +26,8 @@ class UserFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var logoutButton: MaterialButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -30,12 +36,27 @@ class UserFragment : Fragment() {
         }
     }
 
+    private fun logoutUser() {
+        Log.d("User", "logout (navigate to login page)")
+        val intent = Intent(activity, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user, container, false)
+         val view = inflater.inflate(R.layout.fragment_user, container, false)
+
+        // find the logout button in the inflated view
+        logoutButton = view.findViewById(R.id.btn_logout)
+        logoutButton.setOnClickListener {
+            logoutUser()
+        }
+
+        return view
     }
 
     companion object {
