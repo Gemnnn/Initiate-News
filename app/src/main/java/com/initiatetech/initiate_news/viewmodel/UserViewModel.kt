@@ -22,6 +22,10 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     private val _registrationStatus = MutableLiveData<RegistrationStatus>()
     val registrationStatus: LiveData<RegistrationStatus> = _registrationStatus
 
+    // LiveData for logout status
+    private val _logoutStatus = MutableLiveData<LogoutStatus>()
+    val logoutStatus: LiveData<LogoutStatus> = _logoutStatus
+
     fun loginUser(email: String, password: String) {
         val loginInfo = User(email, password) // Assuming UserLogin is similar or use User directly if same attributes
         Log.d("Login", "Start")
@@ -41,6 +45,26 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
             }
         })
     }
+
+    fun logoutUser() {
+        userRepository.logoutUser().enqueue(object : Callback<ApiResponse> {
+            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                if (response.isSuccessful && response.body()?.isSuccess == true) {
+                    Log.d("Logout", "success")
+                    _logoutStatus.value = LogoutStatus.SUCCESS
+                } else {
+                    Log.d("Logout", "fail")
+                    _logoutStatus.value = LogoutStatus.FAILURE
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                _logoutStatus.value = LogoutStatus.ERROR
+            }
+        })
+    }
+
+
 
     fun registerUser(email: String, password: String) {
         val newUser = User(email, password) // Corrected to create a new User instance
@@ -69,6 +93,12 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     }
 
     enum class RegistrationStatus {
+        SUCCESS,
+        FAILURE,
+        ERROR
+    }
+
+    enum class LogoutStatus {
         SUCCESS,
         FAILURE,
         ERROR
