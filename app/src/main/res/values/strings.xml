@@ -21,4 +21,5 @@
 
     <!-- User View -->
     <string name="preference">Preference</string>
+    <string name="logout">Logout</string>
 </resources>
