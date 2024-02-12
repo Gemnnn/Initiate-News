@@ -13,4 +13,7 @@ interface ApiService {
 
     @POST("api/user/login")
     fun loginUser(@Body loginInfo: User): Call<ApiResponse>
+
+    @POST("api/user/logout")
+    fun logoutUser(): Call<ApiResponse>
 }
