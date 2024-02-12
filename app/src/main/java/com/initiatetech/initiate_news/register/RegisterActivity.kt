@@ -7,7 +7,6 @@ import android.util.Patterns
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
 import com.initiatetech.initiate_news.R
@@ -44,9 +43,27 @@ class RegisterActivity : AppCompatActivity() {
             Log.d("Registration", "Cancelled")
             navigateToLoginActivity()
         }
-
-        observeRegistrationStatus()
+//        viewModel.registerUser(email, password)
+//        observeRegistrationStatus()
     }
+
+//    private fun registerUser() {
+//        val email = emailEditText.text.toString().trim()
+//        val password = passwordEditText.text.toString().trim()
+//
+//        // Example validation, adjust according to your requirements
+//        if (email.isEmpty() || password.isEmpty()) {
+//            Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show()
+//        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+//            Toast.makeText(this, "Invalid email format", Toast.LENGTH_SHORT).show()
+//        } else if (password.length < 6) { // Example minimum length
+//            Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+//        } else {
+//            viewModel.registerUser(email, password)
+//            val intent = Intent(this, OtpActivity::class.java)
+//            startActivity(intent)
+//        }
+//    }
 
     private fun registerUser() {
         val email = emailEditText.text.toString().trim()
@@ -59,27 +76,38 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this, "Invalid email format", Toast.LENGTH_SHORT).show()
         } else if (password.length < 6) { // Example minimum length
             Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+        } else if (!password.matches(".*[A-Z].*".toRegex())) {
+            Toast.makeText(this, "Password must contain at least one uppercase letter", Toast.LENGTH_SHORT).show()
+        } else if (!password.matches(".*[!@#$%^&*()_+{}\\[\\]:;<>,.?/~`'-=\\\\|].*".toRegex())) {
+            Toast.makeText(this, "Password must contain at least one special character", Toast.LENGTH_SHORT).show()
         } else {
-            viewModel.registerUser(email, password)
+            // Proceed with registration
+            val intent = Intent(this, OtpActivity::class.java)
+            intent.putExtra("email", email)
+            intent.putExtra("pass",password)
+            startActivity(intent)
         }
     }
 
-    private fun observeRegistrationStatus() {
-        viewModel.registrationStatus.observe(this, Observer { status ->
-            when (status) {
-                UserViewModel.RegistrationStatus.SUCCESS -> {
-                    Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
-                    navigateToLoginActivity()
-                }
-                UserViewModel.RegistrationStatus.FAILURE -> {
-                    Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show()
-                }
-                UserViewModel.RegistrationStatus.ERROR -> {
-                    Toast.makeText(this, "An error occurred during registration", Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
-    }
+
+
+
+//    private fun observeRegistrationStatus() {
+//        viewModel.registrationStatus.observe(this, Observer { status ->
+//            when (status) {
+//                UserViewModel.RegistrationStatus.SUCCESS -> {
+//                    Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
+//                    navigateToLoginActivity()
+//                }
+//                UserViewModel.RegistrationStatus.FAILURE -> {
+//                    Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show()
+//                }
+//                UserViewModel.RegistrationStatus.ERROR -> {
+//                    Toast.makeText(this, "An error occurred during registration", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        })
+//    }
 
     private fun navigateToLoginActivity() {
         val intent = Intent(this, LoginActivity::class.java)
