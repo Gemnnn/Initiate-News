@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.button.MaterialButton
 import com.initiatetech.initiate_news.R
+import com.initiatetech.initiate_news.databinding.FragmentUserBinding
 import com.initiatetech.initiate_news.login.LoginActivity
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,7 +28,8 @@ class UserFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var logoutButton: MaterialButton
+    private lateinit var binding: FragmentUserBinding
+//    private lateinit var logoutButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,13 +49,13 @@ class UserFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-         val view = inflater.inflate(R.layout.fragment_user, container, false)
+        // Possibly funky way of inflating? Lets keep an eye on this
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false)
+        val view = binding.root
 
-        // find the logout button in the inflated view
-        logoutButton = view.findViewById(R.id.btn_logout)
-        logoutButton.setOnClickListener {
+        binding.btnLogout.setOnClickListener {
             logoutUser()
         }
 
