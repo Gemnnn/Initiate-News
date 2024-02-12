@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
+import com.initiatetech.initiate_news.MainActivity
 import com.initiatetech.initiate_news.R
 import com.initiatetech.initiate_news.register.RegisterActivity
 import com.initiatetech.initiate_news.repository.UserRepository
@@ -60,6 +61,7 @@ class LoginActivity : AppCompatActivity() {
             when (status) {
                 UserViewModel.LoginStatus.SUCCESS -> {
                     Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+                    navigateToMainActivity()
                 }
                 UserViewModel.LoginStatus.FAILURE -> {
                     Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show()
@@ -73,6 +75,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun navigateToRegisterActivity() {
         val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
 }
