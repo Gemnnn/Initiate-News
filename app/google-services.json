@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "608199104173",
+    "project_id": "initiateotp",
+    "storage_bucket": "initiateotp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608199104173:android:f5907791078155241fd824",
+        "android_client_info": {
+          "package_name": "com.initiatetech.initiate_news"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXdP8rhmVOe5Qgyicft0zrXgkeBt0TtEo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
