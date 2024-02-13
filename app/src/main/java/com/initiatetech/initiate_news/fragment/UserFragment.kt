@@ -2,8 +2,11 @@ package com.initiatetech.initiate_news.fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Bundle
@@ -11,6 +14,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -44,6 +48,8 @@ class UserFragment : Fragment() {
     private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
 
     private lateinit var locationCallback: com.google.android.gms.location.LocationCallback
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,6 +100,11 @@ class UserFragment : Fragment() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
+        val languages = resources.getStringArray(R.array.language_options)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, languages)
+        binding.spinnerLanguage.adapter = adapter
+
+
         binding.btnLogout.setOnClickListener {
             viewModel.logoutUser()
             val intent = Intent(activity, LoginActivity::class.java).apply {
@@ -110,6 +121,27 @@ class UserFragment : Fragment() {
                 )
             )
         }
+
+        binding.etSetTime.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                calendar.set(Calendar.HOUR_OF_DAY, hour)
+                calendar.set(Calendar.MINUTE, minute)
+                val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+                binding.etSetTime.setText(timeFormat.format(calendar.time))
+            }
+
+            // Initialize the TimePickerDialog with current hour and minute
+            TimePickerDialog(requireContext(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
+        }
+
+        // Handling the "Now" button
+        binding.btnNow.setOnClickListener {
+            val currentTime = Calendar.getInstance()
+            val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            binding.etSetTime.setText(timeFormat.format(currentTime.time))
+        }
+
 
         return binding.root
     }

@@ -79,15 +79,13 @@
         </RelativeLayout>
 
         <!--Time-->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="Time"
+            android:text="Set Time for News Summary"
             android:layout_marginLeft="10dp"
-            android:textStyle="bold">
-
-        </TextView>
+            android:textStyle="bold"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -95,24 +93,40 @@
 
             <EditText
                 android:id="@+id/et_setTime"
-                android:layout_marginLeft="10dp"
                 android:layout_width="260dp"
                 android:layout_height="wrap_content"
-                android:inputType="time">
+                android:hint="HH:mm"
+                android:inputType="time"
 
-            </EditText>
-
+                android:clickable="true"
+                android:layout_marginLeft="10dp"/>
 
             <Button
-                android:id="@+id/btn_setTime"
+                android:id="@+id/btn_now"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/et_setTime"
                 android:text="Now"
-                android:layout_marginRight="50dp"/>
+                android:layout_marginLeft="10dp"/>
 
         </RelativeLayout>
 
+        <!--Language-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Language"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_margin="10dp"

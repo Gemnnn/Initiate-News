@@ -20,9 +20,14 @@
     <string name="addkeyword">Add Keyword</string>
 
     <!-- User View -->
-    <string name="preference">Preference</string>
+    <string name="preference">Update Preference</string>
     <string name="logout">Logout</string>
     <string name="location_text">Latitude: %1$s, Longitude: %2$s</string>
     <string name="location_text_with_country_province">Latitude: %1$s, Longitude: %2$s, Country: %3$s, Province: %4$s</string>
+    <string-array name="language_options">
+        <item>English</item>
+        <item>French</item>
+        <!-- Add other languages as needed -->
+    </string-array>
 
 </resources>
