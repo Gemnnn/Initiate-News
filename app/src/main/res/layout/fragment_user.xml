@@ -8,6 +8,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp">
             <ImageView
+                android:id="@+id/user_profile"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_alignParentStart="true"
@@ -16,9 +17,117 @@
                 android:layout_marginBottom="0dp"
                 android:src="@drawable/ic_account">
             </ImageView>
-            
-            
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/user_profile">
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User Email"
+                        android:textSize="20sp"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
         </RelativeLayout>
+
+        <!--location-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="Location"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/et_location"
+                android:layout_marginLeft="10dp"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:enabled="false">
+
+            </TextView>
+
+
+            <Button
+                android:id="@+id/btn_getLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Get Location"
+                android:layout_marginRight="10dp"/>
+
+        </RelativeLayout>
+
+        <!--Time-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Time for News Summary"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_setTime"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                android:hint="HH:mm"
+                android:inputType="time"
+
+                android:clickable="true"
+                android:layout_marginLeft="10dp"/>
+
+            <Button
+                android:id="@+id/btn_now"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/et_setTime"
+                android:text="Now"
+                android:layout_marginLeft="10dp"/>
+
+        </RelativeLayout>
+
+        <!--Language-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Language"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
         <androidx.appcompat.widget.AppCompatButton
             android:layout_margin="10dp"
             android:id="@+id/btn_set_preference"

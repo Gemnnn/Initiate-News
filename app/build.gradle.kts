@@ -58,4 +58,7 @@ dependencies {
 
     //OTP
     implementation("com.github.1902shubh:SendMail:1.0.0")
+
+    //Location
+    implementation("com.google.android.gms:play-services-location:21.1.0")
 }
