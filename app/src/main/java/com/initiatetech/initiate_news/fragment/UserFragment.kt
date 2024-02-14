@@ -11,6 +11,7 @@ import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,8 @@ import com.google.android.gms.location.LocationServices
 import com.initiatetech.initiate_news.R
 import com.initiatetech.initiate_news.databinding.FragmentUserBinding
 import com.initiatetech.initiate_news.login.LoginActivity
+import com.initiatetech.initiate_news.model.PreferenceData
+import com.initiatetech.initiate_news.repository.PreferenceRepository
 import com.initiatetech.initiate_news.repository.UserRepository
 import com.initiatetech.initiate_news.viewmodel.UserViewModel
 import java.io.IOException
@@ -95,16 +98,43 @@ class UserFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentUserBinding.inflate(inflater, container, false)
-        val factory = UserViewModel.UserViewModelFactory(UserRepository())
+        val factory = UserViewModel.UserViewModelFactory(UserRepository(), PreferenceRepository(), context)
         viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
+        // Set up the spinner (dropdown)
         val languages = resources.getStringArray(R.array.language_options)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, languages)
         binding.spinnerLanguage.adapter = adapter
 
+        // Gets the preferences of the current user
+//        val preferences = viewModel.getPreferences()
+        viewModel.getPreferences { preferences ->
+            initializePreferences(preferences)
+        }
 
+        // Sets the user's preferences to default preference form values
+//        initializePreferences(preferences)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+
+
+        //update preferences
+        binding.btnSetPreference.setOnClickListener {
+            val selectedPosition = binding.spinnerLanguage.selectedItemPosition
+            val language : String = binding.spinnerLanguage.adapter.getItem(selectedPosition).toString().lowercase()
+            val province : String = binding.etLocation.toString().substringBefore(",").trim()
+            val country : String = binding.etLocation.toString().substringAfter(",").trim()
+            val newsGenerationTime : String = binding.etSetTime.toString().trim()
+            val isSetPreference = true
+
+            if (viewModel.setPreferences(language, province, country, newsGenerationTime, isSetPreference)) {
+                Toast.makeText(context, "Preferences saved", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Something went wrong and preferences were not saved", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Logout button
         binding.btnLogout.setOnClickListener {
             viewModel.logoutUser()
             val intent = Intent(activity, LoginActivity::class.java).apply {
@@ -144,6 +174,31 @@ class UserFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun initializePreferences(preferences: PreferenceData?) {
+        if (preferences != null) {
+            if (preferences.isSetPreference) { // Only set default preferences if they are set
+                // Sets the location
+                binding.etLocation.text = "${preferences.province}, ${preferences.country}"
+
+                // Sets the time
+                binding.etSetTime.setText(preferences.newsGenerationTime)
+
+                // Sets the language
+                val index = (0 until binding.spinnerLanguage.adapter.count).firstOrNull { position ->
+                    val languageFromAdapter = binding.spinnerLanguage.adapter.getItem(position)?.toString()?.lowercase()
+                    languageFromAdapter == preferences.language
+                } ?: 0 // Provide a default value for english
+                binding.spinnerLanguage.setSelection(index)
+                Log.d("Preferences", "Default preferences set")
+            } else {
+                Log.d("Preferences", "Default preferences not set previously")
+            }
+        } else {
+            Log.d("Preferences", "Default preferences null and not set")
+        }
     }
 
     private fun isLocationEnabled(): Boolean {

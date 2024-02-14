@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.initiatetech.initiate_news.R
 import com.initiatetech.initiate_news.databinding.ActivityOtpBinding
 import com.initiatetech.initiate_news.login.LoginActivity
+import com.initiatetech.initiate_news.repository.PreferenceRepository
 import com.initiatetech.initiate_news.repository.UserRepository
 import com.initiatetech.initiate_news.viewmodel.UserViewModel
 import papaya.`in`.sendmail.SendMail
@@ -44,7 +45,7 @@ class OtpActivity : AppCompatActivity() {
             random()
         }
 
-        val factory = UserViewModel.UserViewModelFactory(UserRepository())
+        val factory = UserViewModel.UserViewModelFactory(UserRepository(), PreferenceRepository(), this)
         viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
 
 
@@ -139,12 +140,13 @@ class OtpActivity : AppCompatActivity() {
         random = Random.nextInt(100000..999999) // Generate a random number between 100000 and 999999
         val mail = SendMail(
             "initiatenews@gmail.com",
-            "preuwvsydybixgsx",
+            "erkqqljissuduwzf",
             userEmail,
             "Initiate News OTP",
             "Your OTP is -> $random"
         )
         mail.execute()
+        Log.d("Registration", "Sent OTP Mail")
     }
 
     private fun observeRegistrationStatus() {
