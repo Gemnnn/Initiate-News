@@ -139,7 +139,7 @@ class OtpActivity : AppCompatActivity() {
         random = Random.nextInt(100000..999999) // Generate a random number between 100000 and 999999
         val mail = SendMail(
             "initiatenews@gmail.com",
-            "preuwvsydybixgsx",
+            "erkqqljissuduwzf",
             userEmail,
             "Initiate News OTP",
             "Your OTP is -> $random"
