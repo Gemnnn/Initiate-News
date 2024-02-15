@@ -3,6 +3,7 @@ package com.initiatetech.initiate_news.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
@@ -26,6 +27,7 @@ import com.google.android.gms.location.LocationServices
 import com.initiatetech.initiate_news.R
 import com.initiatetech.initiate_news.databinding.FragmentUserBinding
 import com.initiatetech.initiate_news.login.LoginActivity
+import com.initiatetech.initiate_news.repository.PreferenceRepository
 import com.initiatetech.initiate_news.repository.UserRepository
 import com.initiatetech.initiate_news.viewmodel.UserViewModel
 import java.io.IOException
@@ -35,6 +37,10 @@ class UserFragment : Fragment() {
 
     private var param1: String? = null
     private var param2: String? = null
+
+    private var userCountry: String? = null
+    private var userProvince: String? = null
+
 
     private val ARG_PARAM1 = "param1"
     private val ARG_PARAM2 = "param2"
@@ -89,22 +95,44 @@ class UserFragment : Fragment() {
                 }
             }
         }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentUserBinding.inflate(inflater, container, false)
-        val factory = UserViewModel.UserViewModelFactory(UserRepository())
+        val factory = UserViewModel.UserViewModelFactory(UserRepository(), PreferenceRepository(), context)
         viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
+        // Set up the spinner (dropdown)
         val languages = resources.getStringArray(R.array.language_options)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, languages)
         binding.spinnerLanguage.adapter = adapter
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
+
+        binding.btnSetPreference.setOnClickListener {
+            val selectedPosition = binding.spinnerLanguage.selectedItemPosition
+            val language: String = binding.spinnerLanguage.getItemAtPosition(selectedPosition).toString().lowercase()
+            val province: String = userProvince ?: "" // Assuming you've stored userProvince as described earlier
+            val country: String = userCountry ?: "" // Assuming you've stored userCountry as described earlier
+            val newsGenerationTime: String = binding.etSetTime.text.toString().trim()
+            val isSetPreference = true
+
+            viewModel.setPreferences(language, province, country, newsGenerationTime, isSetPreference)
+        }
+
+        viewModel.preferenceUpdateStatus.observe(viewLifecycleOwner) { success ->
+            if (success) {
+                Toast.makeText(context, "Preferences saved", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Something went wrong and preferences were not saved", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Logout button
         binding.btnLogout.setOnClickListener {
             viewModel.logoutUser()
             val intent = Intent(activity, LoginActivity::class.java).apply {
@@ -143,8 +171,11 @@ class UserFragment : Fragment() {
         }
 
 
+        fetchDisplayPreferences()
+
         return binding.root
     }
+
 
     private fun isLocationEnabled(): Boolean {
         val locationManager = ContextCompat.getSystemService(requireContext(), LocationManager::class.java) as LocationManager
@@ -170,12 +201,12 @@ class UserFragment : Fragment() {
             val addresses = geocoder.getFromLocation(latitude, longitude, 1)
             if (addresses != null) {
                 if (addresses.isNotEmpty()) {
-                    val address = addresses?.get(0)
-                    val country = address?.countryName // Get the country name
-                    val province = address?.adminArea // Get the province or state
+                    val address = addresses[0]
+                    userCountry = address.countryName // Update global variable
+                    userProvince = address.adminArea // Update global variable
 
-                    // Update your UI here with the country and province
-                    val locationText = getString(R.string.location_text_with_country_province, latitude, longitude, country, province)
+                    // Continue with updating UI as before
+                    val locationText = getString(R.string.location_text_with_country_province, userCountry, userProvince)
                     binding.etLocation.text = locationText
                 } else {
                     // Handle case where no address is found
@@ -188,6 +219,7 @@ class UserFragment : Fragment() {
             binding.etLocation.text = getString(R.string.location_text, latitude, longitude)
         }
     }
+
 
     companion object {
         @JvmStatic
@@ -228,6 +260,53 @@ class UserFragment : Fragment() {
             ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
         }
+    }
+
+
+
+    // UserFragment.kt
+    private fun fetchDisplayPreferences() {
+        viewModel.getPreferences { preferenceResponse ->
+            preferenceResponse?.let {
+                activity?.runOnUiThread {
+                    // Assuming the email is part of the PreferenceResponse
+                    binding.tvUserEmail.text = it.email ?: "Email not found"
+
+
+                    userCountry = it.country // Update global variable
+                    userProvince = it.province // Update global variable
+
+                    val locationText = getString(R.string.location_text_with_country_province, userCountry, userProvince)
+                    binding.etLocation.text = locationText
+
+                    // time
+                    val newsGenerationTime = it.newsGenerationTime
+                    binding.etSetTime.setText(newsGenerationTime)
+
+                    // language
+
+                    val languages = resources.getStringArray(R.array.language_options)
+                    val languagePosition = languages.indexOfFirst { lang ->
+                        lang.equals(it.language, ignoreCase = true)
+                    }
+
+                    if (languagePosition >= 0) { // Check if the language was found in the array
+                        binding.spinnerLanguage.setSelection(languagePosition)
+                    }
+
+                    // Update other UI elements with preference data
+                }
+            } ?: run {
+                Toast.makeText(context, "Failed to fetch preferences", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+
+    private fun getUserEmail(): String? {
+        val sharedPreferences = activity?.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences?.getString("UserEmail", "")
     }
 
 

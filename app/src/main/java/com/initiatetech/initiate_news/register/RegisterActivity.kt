@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
 import com.initiatetech.initiate_news.R
 import com.initiatetech.initiate_news.login.LoginActivity
+import com.initiatetech.initiate_news.repository.PreferenceRepository
 import com.initiatetech.initiate_news.repository.UserRepository
 import com.initiatetech.initiate_news.viewmodel.UserViewModel
 
@@ -27,7 +28,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
         // Initialize the ViewModel
-        val factory = UserViewModel.UserViewModelFactory(UserRepository())
+        val factory = UserViewModel.UserViewModelFactory(UserRepository(), PreferenceRepository(), this)
         viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
 
         emailEditText = findViewById(R.id.editTextEmail)
@@ -82,6 +83,7 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this, "Password must contain at least one special character", Toast.LENGTH_SHORT).show()
         } else {
             // Proceed with registration
+            Log.d("Registration", "Go to OtpActivity")
             val intent = Intent(this, OtpActivity::class.java)
             intent.putExtra("email", email)
             intent.putExtra("pass",password)
