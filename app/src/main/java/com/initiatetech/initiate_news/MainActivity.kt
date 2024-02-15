@@ -1,9 +1,9 @@
 package com.initiatetech.initiate_news
 
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.initiatetech.initiate_news.databinding.ActivityMainBinding
-import android.os.Bundle
 import com.initiatetech.initiate_news.fragment.FriendFragment
 import com.initiatetech.initiate_news.fragment.NewsFragment
 import com.initiatetech.initiate_news.fragment.SearchFragment

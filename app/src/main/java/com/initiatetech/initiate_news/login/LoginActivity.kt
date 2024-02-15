@@ -37,8 +37,10 @@ class LoginActivity : AppCompatActivity() {
         loginButton = findViewById(R.id.btn_login)
         registerButton = findViewById(R.id.btn_register)
 
+
         loginButton.setOnClickListener {
             performLogin()
+            saveUserEmail(emailEditText.text.toString().trim())
         }
 
         registerButton.setOnClickListener {
@@ -84,4 +86,14 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
+
+
+    fun saveUserEmail(email: String) {
+        val sharedPreferences = this.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putString("UserEmail", email)
+            apply()
+        }
+    }
+
 }

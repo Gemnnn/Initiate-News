@@ -2,6 +2,7 @@ package com.initiatetech.initiate_news.api
 
 import com.initiatetech.initiate_news.model.ApiResponse
 import com.initiatetech.initiate_news.model.PreferenceData
+import com.initiatetech.initiate_news.model.PreferenceResponse
 import com.initiatetech.initiate_news.model.User
 import retrofit2.Call
 import retrofit2.http.Body
@@ -22,7 +23,7 @@ interface ApiService {
     fun logoutUser(): Call<ApiResponse>
 
     @GET("api/preference/{email}")
-    fun getPreferences(@Path("email") email: String?): Call<ApiResponse>
+    fun getPreferences(@Path("email") email: String?): Call<PreferenceResponse>
 
     @PUT("api/preference")
     fun setPreferences(@Body preferences: PreferenceData): Call<ApiResponse>

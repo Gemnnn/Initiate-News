@@ -6,8 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.initiatetech.initiate_news.api.RetrofitClient
 import com.initiatetech.initiate_news.model.ApiResponse
 import com.initiatetech.initiate_news.model.PreferenceData
+import com.initiatetech.initiate_news.model.PreferenceResponse
 import com.initiatetech.initiate_news.model.User
 import com.initiatetech.initiate_news.repository.PreferenceRepository
 import com.initiatetech.initiate_news.repository.UserRepository
@@ -36,6 +38,9 @@ class UserViewModel(private val userRepository: UserRepository,
     // LiveData for logout status
     private val _logoutStatus = MutableLiveData<LogoutStatus>()
     val logoutStatus: LiveData<LogoutStatus> = _logoutStatus
+
+    val preferenceUpdateStatus = MutableLiveData<Boolean>()
+
 
     fun loginUser(email: String, password: String) {
         val loginInfo = User(email, password) // Assuming UserLogin is similar or use User directly if same attributes
@@ -111,49 +116,49 @@ class UserViewModel(private val userRepository: UserRepository,
         })
     }
 
-    fun getPreferences(callback: (PreferenceData?) -> Unit) {
-        Log.d("Preferences", "getPreferences Start")
-        preferenceRepository.getPreferences(getUserEmail()).enqueue(object : Callback<ApiResponse> {
-            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                if (response.isSuccessful && response.body()?.isSuccess == true) {
-                    Log.d("Preferences", "getPreferences Successful response")
-                    callback(response.body()?.preferenceData)
-                } else {
-                    Log.d("Preferences", "getPreferences failed response")
-                    Log.d("Preferences", response.code().toString())
-                    Log.d("Preferences", call.request().toString())
+    // UserViewModel.kt
+    fun getPreferences(callback: (PreferenceResponse?) -> Unit) {
+        val userEmail = getUserEmail()
+        if (userEmail != null) {
+            RetrofitClient.instance.getPreferences(userEmail).enqueue(object : Callback<PreferenceResponse> {
+                override fun onResponse(call: Call<PreferenceResponse>, response: Response<PreferenceResponse>) {
+                    if (response.isSuccessful) {
+                        // Directly pass the PreferenceResponse object to the callback
+                        callback(response.body())
+                    } else {
+                        callback(null)
+                    }
+                }
+
+                override fun onFailure(call: Call<PreferenceResponse>, t: Throwable) {
                     callback(null)
                 }
-            }
-
-            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                Log.e("Preferences", "getPreferences Error", t)
-                callback(null)
-            }
-        })
+            })
+        } else {
+            callback(null)
+        }
     }
 
-    fun setPreferences(language: String, province: String, country: String, newsGenerationTime: String, isSetPreference: Boolean): Boolean {
-        var setPreferenceSuccess = false
+
+    fun setPreferences(language: String, province: String, country: String, newsGenerationTime: String, isSetPreference: Boolean) {
         val preferences = PreferenceData(language, province, country, newsGenerationTime, getUserEmail(), isSetPreference)
         Log.d("Preferences", "setPreferences Start")
         preferenceRepository.setPreferences(preferences).enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 if (response.isSuccessful && response.body()?.isSuccess == true) {
                     Log.d("Preferences", "setPreferences Successful response")
-                    setPreferenceSuccess = true
+                    preferenceUpdateStatus.postValue(true)
                 } else {
                     Log.d("Preferences", "setPreferences failed response")
-                    Log.d("Preferences", response.code().toString())
+                    preferenceUpdateStatus.postValue(false)
                 }
             }
 
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
                 Log.e("Preferences", "setPreferences Error", t)
+                preferenceUpdateStatus.postValue(false)
             }
         })
-
-        return setPreferenceSuccess
     }
 
     enum class LoginStatus {
