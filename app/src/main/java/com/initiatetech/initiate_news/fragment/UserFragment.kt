@@ -264,7 +264,6 @@ class UserFragment : Fragment() {
 
 
 
-    // UserFragment.kt
     private fun fetchDisplayPreferences() {
         viewModel.getPreferences { preferenceResponse ->
             preferenceResponse?.let {

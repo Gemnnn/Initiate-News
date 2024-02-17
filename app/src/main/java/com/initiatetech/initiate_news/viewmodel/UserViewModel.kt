@@ -116,7 +116,6 @@ class UserViewModel(private val userRepository: UserRepository,
         })
     }
 
-    // UserViewModel.kt
     fun getPreferences(callback: (PreferenceResponse?) -> Unit) {
         val userEmail = getUserEmail()
         if (userEmail != null) {
