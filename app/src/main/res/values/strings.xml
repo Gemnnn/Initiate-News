@@ -30,4 +30,6 @@
         <!-- Add other languages as needed -->
     </string-array>
 
+    <!--Keyword View-->
+    <string name="remove_keyword">Remove Keyword</string>
 </resources>
