@@ -16,6 +16,7 @@
             android:layout_height="150dp"
             android:padding="10dp">
             <EditText
+                android:id="@+id/et_addKeyword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
@@ -26,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:background="@color/primary"
-                android:text="@string/addkeyword" />
+                android:text="@string/addkeyword"
+                android:id="@+id/btn_addKeyword"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
