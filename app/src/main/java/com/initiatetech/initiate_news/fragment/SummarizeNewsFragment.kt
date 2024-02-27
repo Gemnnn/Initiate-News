@@ -7,11 +7,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.initiatetech.initiate_news.R
+import com.initiatetech.initiate_news.databinding.FragmentSummarizeNewsBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+
+private var _binding: FragmentSummarizeNewsBinding? = null
+
+private val binding get() = _binding!!
 
 /**
  * A simple [Fragment] subclass.
@@ -35,8 +40,10 @@ class SummarizeNewsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_summarize_news, container, false)
+        _binding = FragmentSummarizeNewsBinding.inflate(inflater, container, false)
+
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,6 +51,14 @@ class SummarizeNewsFragment : Fragment() {
         // Retrieve and display the keyword
         val keyword = arguments?.getString("keyword")
         view.findViewById<TextView>(R.id.tv_keyword).text = keyword
+
+        binding.btnNewsBack.setOnClickListener {
+            val f = NewsFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.main_content, f) // Use the correct container ID
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
 
