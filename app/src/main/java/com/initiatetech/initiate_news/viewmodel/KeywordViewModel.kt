@@ -11,6 +11,7 @@ class KeywordViewModel : ViewModel() {
     fun addKeyword(keyword: String) {
         val currentList = _keywords.value ?: emptyList()
         _keywords.value = currentList + keyword
+
     }
 
     fun removeKeyword(keyword: String) {
