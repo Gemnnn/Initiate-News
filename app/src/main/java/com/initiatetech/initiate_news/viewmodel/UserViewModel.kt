@@ -71,7 +71,7 @@ class UserViewModel(private val userRepository: UserRepository,
         editor?.apply()
     }
 
-    private fun getUserEmail(): String? {
+    public fun getUserEmail(): String? {
         val sharedPref = context?.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
         return sharedPref?.getString("user_email", null)
     }

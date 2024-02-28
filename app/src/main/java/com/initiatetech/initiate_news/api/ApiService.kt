@@ -1,6 +1,7 @@
 package com.initiatetech.initiate_news.api
 
 import com.initiatetech.initiate_news.model.ApiResponse
+import com.initiatetech.initiate_news.model.NewsResponse
 import com.initiatetech.initiate_news.model.PreferenceData
 import com.initiatetech.initiate_news.model.PreferenceResponse
 import com.initiatetech.initiate_news.model.User
@@ -27,4 +28,8 @@ interface ApiService {
 
     @PUT("api/preference")
     fun setPreferences(@Body preferences: PreferenceData): Call<ApiResponse>
+
+    @GET("api/News/keyword/{username}/{keyword}")
+    fun getAllKeywordNews(@Path("username") username: String, @Path("keyword") keyword: String): Call<List<NewsResponse>>
+
 }
