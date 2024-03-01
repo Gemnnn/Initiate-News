@@ -26,6 +26,9 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        Thread.sleep(3000)
+//        installSplashScreen()
+        setTheme(R.style.Theme_InitiateNews)
         setContentView(R.layout.activity_login)
 
         // Initialize the ViewModel

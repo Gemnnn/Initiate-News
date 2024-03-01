@@ -27,4 +27,10 @@
         <item name="android:backgroundDimAmount">0.6</item>
     </style>
 
+    <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/primary</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_splash</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.InitiateNews</item>
+    </style>
+
 </resources>
