@@ -49,7 +49,7 @@ class SummarizeNewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val keyword = arguments?.getString("keyword")
+        val keyword = arguments?.getString("keyword") ?: return
         view.findViewById<TextView>(R.id.tv_keyword).text = keyword
 
         binding.btnNewsBack.setOnClickListener {
@@ -58,7 +58,7 @@ class SummarizeNewsFragment : Fragment() {
 
         setupRecyclerView()
 
-        val username = userViewModel.getUserEmail() ?: "test@test.com"
+        val username = userViewModel.getUserEmail() ?: "test@gmail.com"
 
         if (keyword != null) {
             viewModel.fetchNewsForKeyword(username, keyword)

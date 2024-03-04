@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.initiatetech.initiate_news.R
 import com.initiatetech.initiate_news.model.NewsResponse
+import java.text.ParseException
 import java.util.Locale
 
 class NewsTimelineAdapter(private val onTitleClick: (String) -> Unit) : RecyclerView.Adapter<NewsTimelineAdapter.NewsViewHolder>() {
@@ -43,18 +44,27 @@ class NewsTimelineAdapter(private val onTitleClick: (String) -> Unit) : Recycler
         private val dateView: TextView = itemView.findViewById(R.id.tvDate)
 
         fun bind(newsItem: NewsResponse) {
-            titleView.text = newsItem.title
+            titleView.text = newsItem.shortTitle
             dateView.text = formatDate(newsItem.publishedDate)
 
             titleView.setOnClickListener { onTitleClick(newsItem.id.toString()) }
         }
 
         private fun formatDate(dateStr: String): String {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
-            val date = inputFormat.parse(dateStr)
-            return outputFormat.format(date)
+            // Assuming you are receiving a time-only string and want to keep it that way
+            // If your intention was to parse a full date string, you'll need to adjust the input format accordingly
+            val inputFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault()) // Adjust this if you want to format it differently
+            try {
+                val date = inputFormat.parse(dateStr)
+                return outputFormat.format(date)
+            } catch (e: ParseException) {
+                // Log the exception or handle it as needed
+                e.printStackTrace()
+                return dateStr // Return the original string or a placeholder as appropriate
+            }
         }
+
     }
 
     companion object {

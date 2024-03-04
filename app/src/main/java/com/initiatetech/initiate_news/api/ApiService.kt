@@ -49,8 +49,8 @@ interface ApiService {
 
 
     // Summarized News calls
-    @GET("api/news/keyword/{username}/{keyword}")
-    fun getNewsByKeyword(@Path("username") username: String, @Path("keyword") keyword: String): Call<SumNewsResponse>
+    @GET("api/News/keyword/{username}/{keyword}")
+    fun getAllKeywordNews(@Path("username") username: String, @Path("keyword") keyword: String): Call<List<NewsResponse>>
 
     @GET("api/news/location/{username}/{keyword}")
     fun getLocationNewsByKeyword(@Path("username") username: String, @Path("keyword") keyword: String): Call<SumNewsResponse>

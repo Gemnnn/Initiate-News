@@ -108,11 +108,12 @@ class NewsFragment : Fragment() {
                 putString("keyword", keyword) // Pass the keyword to the fragment
             }
         }
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.main_content, fragment) // Use the correct container ID
-            .addToBackStack(null)
-            .commit()
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.main_content, fragment)
+            ?.addToBackStack(null)
+            ?.commit()
     }
+
 
 
 
