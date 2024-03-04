@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.initiatetech.initiate_news.databinding.FragmentSearchBinding
+import com.initiatetech.initiate_news.repository.KeywordRepository
 import com.initiatetech.initiate_news.viewmodel.KeywordViewModel
 
 
@@ -36,7 +37,8 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         // Initialize View Model
-        viewModel = ViewModelProvider(requireActivity()).get(KeywordViewModel::class.java)
+        val factory = KeywordViewModel.KeywordViewModelFactory(KeywordRepository(), context)
+        viewModel = ViewModelProvider(this, factory).get(KeywordViewModel::class.java)
 
         return binding.root
     }
