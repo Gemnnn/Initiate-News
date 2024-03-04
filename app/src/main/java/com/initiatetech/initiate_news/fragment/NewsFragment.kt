@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.initiatetech.initiate_news.R
 import com.initiatetech.initiate_news.databinding.FragmentNewsBinding
+import com.initiatetech.initiate_news.repository.KeywordRepository
 import com.initiatetech.initiate_news.viewmodel.KeywordViewModel
 
 // TODO: Rename parameter arguments, choose names that match
@@ -54,6 +55,10 @@ class NewsFragment : Fragment() {
 
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
 
+        // Initialize the ViewModel
+        val factory = KeywordViewModel.KeywordViewModelFactory(KeywordRepository(), context)
+        viewModel = ViewModelProvider(this, factory).get(KeywordViewModel::class.java)
+
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_news, container, false)
         return binding.root
@@ -64,8 +69,8 @@ class NewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize the ViewModel
-        viewModel = ViewModelProvider(requireActivity()).get(KeywordViewModel::class.java)
+        // Gets all of user's current keywords
+        viewModel.getKeywords()
 
         viewModel.keywords.observe(viewLifecycleOwner) { keywords ->
             val keywordsContainer = binding.keywordsContainer
