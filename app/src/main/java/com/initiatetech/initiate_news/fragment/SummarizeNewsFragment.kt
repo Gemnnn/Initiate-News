@@ -6,57 +6,97 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.initiatetech.initiate_news.R
+import com.initiatetech.initiate_news.adapter.NewsTimelineAdapter
+import com.initiatetech.initiate_news.databinding.FragmentSummarizeNewsBinding
+import com.initiatetech.initiate_news.repository.NewsRepository
+import com.initiatetech.initiate_news.repository.PreferenceRepository
+import com.initiatetech.initiate_news.repository.UserRepository
+import com.initiatetech.initiate_news.viewmodel.NewsViewModel
+import com.initiatetech.initiate_news.viewmodel.UserViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SummarizeNewsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SummarizeNewsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentSummarizeNewsBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var newsTimelineAdapter: NewsTimelineAdapter
+
+    private val ARG_PARAM1 = "param1"
+    private val ARG_PARAM2 = "param2"
+
+    private lateinit var viewModel: NewsViewModel
+
+    private lateinit var userViewModel: UserViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_summarize_news, container, false)
+        _binding = FragmentSummarizeNewsBinding.inflate(inflater, container, false)
+        val factory = NewsViewModel.NewsViewModelFactory(NewsRepository())
+        viewModel = ViewModelProvider(this, factory).get(NewsViewModel::class.java)
+
+        val userFactory = UserViewModel.UserViewModelFactory(UserRepository(), PreferenceRepository(), context)
+        userViewModel = ViewModelProvider(this, userFactory).get(UserViewModel::class.java)
+
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Retrieve and display the keyword
         val keyword = arguments?.getString("keyword")
         view.findViewById<TextView>(R.id.tv_keyword).text = keyword
+
+        binding.btnNewsBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
+        setupRecyclerView()
+
+        val username = userViewModel.getUserEmail() ?: "test@test.com"
+
+        if (keyword != null) {
+            viewModel.fetchNewsForKeyword(username, keyword)
+        }
+
+        viewModel.newsItems.observe(viewLifecycleOwner) { newsItems ->
+            // Update your RecyclerView adapter here
+            newsTimelineAdapter.submitList(newsItems)
+        }
+    }
+
+    private fun setupRecyclerView() {
+        // This lambda matches the adapter's constructor parameter
+        newsTimelineAdapter = NewsTimelineAdapter { newsId ->
+            navigateToNewsDetailFragment(newsId)
+        }
+
+        binding.rvTimeline.layoutManager = LinearLayoutManager(context)
+        binding.rvTimeline.adapter = newsTimelineAdapter
+    }
+
+    private fun navigateToNewsDetailFragment(newsId: String) {
+        val fragment = NewsDetailFragment().apply {
+            arguments = Bundle().apply {
+                putString("newsId", newsId)
+            }
+        }
+        fragment.show(parentFragmentManager, "NewsDetailFragment")
     }
 
 
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SummarizeNewsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             SummarizeNewsFragment().apply {

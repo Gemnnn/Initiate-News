@@ -37,7 +37,6 @@ interface ApiService {
     @PUT("api/preference")
     fun setPreferences(@Body preferences: PreferenceData): Call<ApiResponse>
 
-
     // Keyword calls
     @GET("api/keyword/{username}")
     fun getAllKeywords(@Path("username") username: String): Call<List<KeywordResponse>>
@@ -62,11 +61,11 @@ interface ApiService {
     @GET("api/news/keyword/{username}/{keyword}")
     fun getNewsByFirstLocation(@Path("username") username: String, @Path("keyword") keyword: String): Call<SumNewsResponse>
 
-
     // News calls
     @GET("api/news/keyword/{username}/{id}")
     fun getFullLocationNews(@Path("username") username: String, @Path("id") id: Int): Call<NewsResponse>
 
     @GET("api/news/keyword/{username}/{id}")
     fun getFullKeywordNews(@Path("username") username: String, @Path("id") id: Int): Call<NewsResponse>
+
 }
