@@ -3,6 +3,7 @@ package com.initiatetech.initiate_news.api
 import com.initiatetech.initiate_news.model.ApiResponse
 import com.initiatetech.initiate_news.model.Keyword
 import com.initiatetech.initiate_news.model.KeywordResponse
+import com.initiatetech.initiate_news.model.NewsDetailResponse
 import com.initiatetech.initiate_news.model.NewsResponse
 import com.initiatetech.initiate_news.model.PreferenceData
 import com.initiatetech.initiate_news.model.PreferenceResponse
@@ -65,7 +66,11 @@ interface ApiService {
     @GET("api/news/keyword/{username}/{id}")
     fun getFullLocationNews(@Path("username") username: String, @Path("id") id: Int): Call<NewsResponse>
 
-    @GET("api/news/keyword/{username}/{id}")
-    fun getFullKeywordNews(@Path("username") username: String, @Path("id") id: Int): Call<NewsResponse>
+//    @GET("api/news/keyword/{username}/{id}")
+//    fun getFullKeywordNews(@Path("username") username: String, @Path("id") id: Int): Call<NewsResponse>
+    @GET("api/News/keyword/{username}/{id}")
+    fun getKeywordNews(@Path("username") username: String, @Path("id") id: Int): Call<NewsDetailResponse>
+
+
 
 }

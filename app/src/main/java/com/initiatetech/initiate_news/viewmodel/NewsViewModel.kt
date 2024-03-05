@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.initiatetech.initiate_news.model.NewsDetailResponse
 import com.initiatetech.initiate_news.model.NewsResponse
 import com.initiatetech.initiate_news.repository.NewsRepository
 import retrofit2.Call
@@ -14,6 +15,9 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
 
     private val _newsItems = MutableLiveData<List<NewsResponse>>()
     val newsItems: LiveData<List<NewsResponse>> = _newsItems
+
+    private val _newsDetail = MutableLiveData<NewsDetailResponse?>()
+    val newsDetail: LiveData<NewsDetailResponse?> = _newsDetail
 
     private val _isFetchingData = MutableLiveData<Boolean>()
     fun fetchNewsForKeyword(username: String, keyword: String) {
@@ -34,6 +38,24 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
             }
         })
     }
+
+
+    fun fetchNewsDetail(username: String, newsId: Int) {
+        newsRepository.getNewsDetail(username, newsId).enqueue(object : Callback<NewsDetailResponse> {
+            override fun onResponse(call: Call<NewsDetailResponse>, response: Response<NewsDetailResponse>) {
+                if (response.isSuccessful) {
+                    _newsDetail.postValue(response.body())
+                } else {
+                    _newsDetail.postValue(null)
+                }
+            }
+
+            override fun onFailure(call: Call<NewsDetailResponse>, t: Throwable) {
+                _newsDetail.postValue(null)
+            }
+        })
+    }
+
 
     class NewsViewModelFactory(private val newsRepository: NewsRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

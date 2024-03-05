@@ -51,10 +51,8 @@ class NewsTimelineAdapter(private val onTitleClick: (String) -> Unit) : Recycler
         }
 
         private fun formatDate(dateStr: String): String {
-            // Assuming you are receiving a time-only string and want to keep it that way
-            // If your intention was to parse a full date string, you'll need to adjust the input format accordingly
-            val inputFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault()) // Adjust this if you want to format it differently
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.getDefault())
             try {
                 val date = inputFormat.parse(dateStr)
                 return outputFormat.format(date)
@@ -64,6 +62,7 @@ class NewsTimelineAdapter(private val onTitleClick: (String) -> Unit) : Recycler
                 return dateStr // Return the original string or a placeholder as appropriate
             }
         }
+
 
     }
 
