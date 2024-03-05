@@ -1,6 +1,8 @@
 package com.initiatetech.initiate_news.fragment
 
+import android.content.Context
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import com.initiatetech.initiate_news.R
 import com.initiatetech.initiate_news.adapter.NewsTimelineAdapter
 import com.initiatetech.initiate_news.databinding.FragmentSummarizeNewsBinding
@@ -65,8 +68,19 @@ class SummarizeNewsFragment : Fragment() {
         }
 
         viewModel.newsItems.observe(viewLifecycleOwner) { newsItems ->
-            // Update your RecyclerView adapter here
             newsTimelineAdapter.submitList(newsItems)
+
+            // auto scroll
+            if (newsItems.isNotEmpty()) {
+                val smoothScroller = CustomSmoothScroller(requireContext())
+                smoothScroller.targetPosition = newsItems.size - 1
+                binding.rvTimeline.layoutManager?.startSmoothScroll(smoothScroller)
+            }
+        }
+    }
+    class CustomSmoothScroller(context: Context) : LinearSmoothScroller(context) {
+        override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
+            return 150f / displayMetrics.densityDpi
         }
     }
 
