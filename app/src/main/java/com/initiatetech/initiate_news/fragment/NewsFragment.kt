@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.initiatetech.initiate_news.R
 import com.initiatetech.initiate_news.databinding.FragmentNewsBinding
 import com.initiatetech.initiate_news.repository.KeywordRepository
+import com.initiatetech.initiate_news.repository.NewsRepository
 import com.initiatetech.initiate_news.viewmodel.KeywordViewModel
 
 // TODO: Rename parameter arguments, choose names that match
@@ -56,7 +57,7 @@ class NewsFragment : Fragment() {
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
 
         // Initialize the ViewModel
-        val factory = KeywordViewModel.KeywordViewModelFactory(KeywordRepository(), context)
+        val factory = KeywordViewModel.KeywordViewModelFactory(KeywordRepository(), NewsRepository(), context)
         viewModel = ViewModelProvider(this, factory).get(KeywordViewModel::class.java)
 
         // Inflate the layout for this fragment
