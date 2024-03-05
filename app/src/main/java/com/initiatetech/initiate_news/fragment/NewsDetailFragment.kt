@@ -12,11 +12,16 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.initiatetech.initiate_news.R
 import com.initiatetech.initiate_news.repository.NewsRepository
+import com.initiatetech.initiate_news.repository.PreferenceRepository
+import com.initiatetech.initiate_news.repository.UserRepository
 import com.initiatetech.initiate_news.viewmodel.NewsViewModel
+import com.initiatetech.initiate_news.viewmodel.UserViewModel
 
 class NewsDetailFragment : DialogFragment() {
 
     private lateinit var viewModel: NewsViewModel
+
+    private lateinit var userViewModel: UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +30,9 @@ class NewsDetailFragment : DialogFragment() {
         // Initialize the ViewModel
         val factory = NewsViewModel.NewsViewModelFactory(NewsRepository())
         viewModel = ViewModelProvider(this, factory).get(NewsViewModel::class.java)
+
+        val userFactory = UserViewModel.UserViewModelFactory(UserRepository(), PreferenceRepository(), context)
+        userViewModel = ViewModelProvider(this, userFactory).get(UserViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,7 +44,7 @@ class NewsDetailFragment : DialogFragment() {
 
         // Assuming 'newsId' is passed as a string argument; parse it to Int
         val newsId = arguments?.getString("newsId")?.toIntOrNull()
-        val username = "exampleUsername" // Ideally, pass this securely or retrieve from authenticated user session
+        val username = userViewModel.getUserEmail() ?: "test@test.com"
 
         newsId?.let {
             viewModel.fetchNewsDetail(username, it)
