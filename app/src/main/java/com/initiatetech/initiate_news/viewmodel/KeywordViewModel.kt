@@ -1,7 +1,6 @@
 package com.initiatetech.initiate_news.viewmodel
 
 import android.content.Context
-import android.health.connect.datatypes.units.Length
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
@@ -80,7 +79,7 @@ class KeywordViewModel(private val keywordRepository: KeywordRepository,
                                 // If true then the new Keyword has no news, add function to generate news here?
                                 // TODO("Implement stuff to generate news for this new keyword")
 
-
+                                getFirstKeywordNews(_username, keyword)
                             }
                         }
 
@@ -149,6 +148,24 @@ class KeywordViewModel(private val keywordRepository: KeywordRepository,
                 Log.e("Keyword", "getAllKeywordNews error", t)
                 // Handle failure
                 callback(false) // Assuming news for failures
+            }
+        })
+    }
+
+    private fun getFirstKeywordNews(username: String, keyword: String) {
+        newsRepository.getFirstKeywordNews(username, keyword).enqueue(object : Callback<List<NewsResponse>> {
+            override fun onResponse(call: Call<List<NewsResponse>>, response: Response<List<NewsResponse>>) {
+                if (response.isSuccessful && response.body()?.isNotEmpty() == true) {
+                    Log.d("News", "getFirstKeywordNews successful response: initial news loaded")
+                } else {
+                    Log.d("News", "getFirstKeywordNews failed response: initial news not loaded correctly")
+                    Toast.makeText(context, "$keyword news did not load correctly", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<NewsResponse>>, t: Throwable) {
+                Log.e("News", "getFirstKeywordNews error", t)
+                Toast.makeText(context, "Loading $keyword news failed", Toast.LENGTH_SHORT).show()
             }
         })
     }

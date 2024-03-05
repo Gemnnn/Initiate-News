@@ -7,7 +7,6 @@ import com.initiatetech.initiate_news.model.NewsDetailResponse
 import com.initiatetech.initiate_news.model.NewsResponse
 import com.initiatetech.initiate_news.model.PreferenceData
 import com.initiatetech.initiate_news.model.PreferenceResponse
-import com.initiatetech.initiate_news.model.SumNewsResponse
 import com.initiatetech.initiate_news.model.User
 import retrofit2.Call
 import retrofit2.http.Body
@@ -38,6 +37,7 @@ interface ApiService {
     @PUT("api/preference")
     fun setPreferences(@Body preferences: PreferenceData): Call<ApiResponse>
 
+
     // Keyword calls
     @GET("api/keyword/{username}")
     fun getAllKeywords(@Path("username") username: String): Call<List<KeywordResponse>>
@@ -53,24 +53,12 @@ interface ApiService {
     @GET("api/News/keyword/{username}/{keyword}")
     fun getAllKeywordNews(@Path("username") username: String, @Path("keyword") keyword: String): Call<List<NewsResponse>>
 
-    @GET("api/news/location/{username}/{keyword}")
-    fun getLocationNewsByKeyword(@Path("username") username: String, @Path("keyword") keyword: String): Call<SumNewsResponse>
+    @GET("api/News/firstKeyword/{username}/{keyword}")
+    fun getFirstKeywordNews(@Path("username") username: String, @Path("keyword") keyword: String): Call<List<NewsResponse>>
 
-    @GET("api/news/keyword/{username}/{keyword}")
-    fun getNewsByFirstKeyword(@Path("username") username: String, @Path("keyword") keyword: String): Call<SumNewsResponse>
-
-    @GET("api/news/keyword/{username}/{keyword}")
-    fun getNewsByFirstLocation(@Path("username") username: String, @Path("keyword") keyword: String): Call<SumNewsResponse>
 
     // News calls
-    @GET("api/news/keyword/{username}/{id}")
-    fun getFullLocationNews(@Path("username") username: String, @Path("id") id: Int): Call<NewsResponse>
-
-//    @GET("api/news/keyword/{username}/{id}")
-//    fun getFullKeywordNews(@Path("username") username: String, @Path("id") id: Int): Call<NewsResponse>
     @GET("api/News/keyword/{username}/{id}")
     fun getKeywordNews(@Path("username") username: String, @Path("id") id: Int): Call<NewsDetailResponse>
-
-
 
 }
