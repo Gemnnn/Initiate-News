@@ -35,6 +35,12 @@ class NewsTimelineAdapter(private val onTitleClick: (String) -> Unit) : Recycler
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val newsItem = newsItems[position]
         holder.bind(newsItem)
+
+        if (position == itemCount - 1) {
+            holder.itemView.setBackgroundResource(R.drawable.item_shadow)
+        } else {
+            holder.itemView.setBackgroundResource(R.drawable.normal_background)
+        }
     }
 
     override fun getItemCount(): Int = newsItems.size
