@@ -11,13 +11,17 @@ import androidx.lifecycle.ViewModelProvider
 import com.initiatetech.initiate_news.model.ApiResponse
 import com.initiatetech.initiate_news.model.Keyword
 import com.initiatetech.initiate_news.model.KeywordResponse
+import com.initiatetech.initiate_news.model.NewsResponse
 import com.initiatetech.initiate_news.repository.KeywordRepository
+import com.initiatetech.initiate_news.repository.NewsRepository
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Callback
 import java.lang.ref.WeakReference
 
-class KeywordViewModel(private val keywordRepository: KeywordRepository, context: Context?) : ViewModel() {
+class KeywordViewModel(private val keywordRepository: KeywordRepository,
+                       private val newsRepository: NewsRepository,
+                       context: Context?) : ViewModel() {
 
     private val contextRef: WeakReference<Context> = WeakReference(context)
     private val context: Context?
@@ -68,6 +72,18 @@ class KeywordViewModel(private val keywordRepository: KeywordRepository, context
                     if (response.isSuccessful && response.body()?.isSuccess == true) {
                         Log.d("Keyword", "addKeyword successful response")
                         Toast.makeText(context, "$keyword was added to your Home", Toast.LENGTH_SHORT).show()
+
+                        // Check to see if news for keyword already exists or not
+                        keywordHasNoNews(newKeyword) { hasNoNews ->
+                            if (hasNoNews) {
+                                Log.d("Keyword", "keyword has no news, generating news now")
+                                // If true then the new Keyword has no news, add function to generate news here?
+                                // TODO("Implement stuff to generate news for this new keyword")
+
+
+                            }
+                        }
+
                     } else {
                         val errorMessage = response.errorBody()?.string() ?: "Unknown error"
                         val errorCode = response.code()
@@ -110,17 +126,47 @@ class KeywordViewModel(private val keywordRepository: KeywordRepository, context
         }
     }
 
+    private fun keywordHasNoNews(newKeyword: Keyword, callback: (Boolean) -> Unit) {
+        val username = newKeyword.username
+        val keyword = newKeyword.word
+
+        newsRepository.getAllKeywordNews(username, keyword).enqueue(object : Callback<List<NewsResponse>> {
+            override fun onResponse(call: Call<List<NewsResponse>>, response: Response<List<NewsResponse>>) {
+                if (response.isSuccessful) {
+                    Log.d("Keyword", "getAllKeywordNews successful response")
+                    // If there is news then false, if there is no news then true
+                    val noNews = response.body()?.isEmpty() ?: false
+                    Log.d("Keyword", "noNews is $noNews")
+                    callback(noNews)
+                } else {
+                    // Handle unsuccessful response
+                    Log.d("Keyword", "getAllKeywordNews failed response")
+                    callback(false) // Assuming news for unsuccessful responses
+                }
+            }
+
+            override fun onFailure(call: Call<List<NewsResponse>>, t: Throwable) {
+                Log.e("Keyword", "getAllKeywordNews error", t)
+                // Handle failure
+                callback(false) // Assuming news for failures
+            }
+        })
+    }
+
+
     private fun getUserEmail(): String? {
         val sharedPref = context?.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
         return sharedPref?.getString("user_email", null)
     }
 
-    class KeywordViewModelFactory(private val keywordRepository: KeywordRepository, private val context: Context?) :
+    class KeywordViewModelFactory(private val keywordRepository: KeywordRepository,
+                                  private val newsRepository: NewsRepository,
+                                  private val context: Context?) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(KeywordViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return KeywordViewModel(keywordRepository, context) as T
+                return KeywordViewModel(keywordRepository, newsRepository, context) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
