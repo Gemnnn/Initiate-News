@@ -68,15 +68,24 @@ class SummarizeNewsFragment : Fragment() {
         }
 
         viewModel.newsItems.observe(viewLifecycleOwner) { newsItems ->
-            newsTimelineAdapter.submitList(newsItems)
+            if (newsItems.isEmpty()) {
+                // If there are no news items, show the "no news" message
+                binding.tvNoNewsMessage.visibility = View.VISIBLE
+                binding.tvNoNewsMessage.text = getString(R.string.no_news_message, keyword)
+                binding.rvTimeline.visibility = View.GONE
+            } else {
+                // If there are news items, show them in the RecyclerView
+                binding.tvNoNewsMessage.visibility = View.GONE
+                binding.rvTimeline.visibility = View.VISIBLE
+                newsTimelineAdapter.submitList(newsItems)
 
-            // auto scroll
-            if (newsItems.isNotEmpty()) {
+                // Auto Scroll
                 val smoothScroller = CustomSmoothScroller(requireContext())
                 smoothScroller.targetPosition = newsItems.size - 1
                 binding.rvTimeline.layoutManager?.startSmoothScroll(smoothScroller)
             }
         }
+
     }
     class CustomSmoothScroller(context: Context) : LinearSmoothScroller(context) {
         override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {

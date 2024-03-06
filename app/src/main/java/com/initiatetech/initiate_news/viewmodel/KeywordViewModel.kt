@@ -14,8 +14,8 @@ import com.initiatetech.initiate_news.model.NewsResponse
 import com.initiatetech.initiate_news.repository.KeywordRepository
 import com.initiatetech.initiate_news.repository.NewsRepository
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.Callback
+import retrofit2.Response
 import java.lang.ref.WeakReference
 
 class KeywordViewModel(private val keywordRepository: KeywordRepository,
@@ -70,7 +70,7 @@ class KeywordViewModel(private val keywordRepository: KeywordRepository,
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.isSuccess == true) {
                         Log.d("Keyword", "addKeyword successful response")
-                        Toast.makeText(context, "$keyword was added to your Home", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(context, "$keyword was added to your Home", Toast.LENGTH_SHORT).show()
 
                         // Check to see if news for keyword already exists or not
                         keywordHasNoNews(newKeyword) { hasNoNews ->

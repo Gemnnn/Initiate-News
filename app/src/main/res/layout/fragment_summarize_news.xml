@@ -43,6 +43,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <!-- TextView for no news message -->
+        <TextView
+            android:id="@+id/tvNoNewsMessage"
+            android:layout_marginTop="300dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            android:text="@string/no_news_message"/>
+
     </LinearLayout>
 
 </layout>
