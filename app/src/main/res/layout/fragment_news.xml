@@ -5,31 +5,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/buttonContainer"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:padding="10dp">
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_set_preference"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:text="@string/lbns"/>
+                android:layout_height="200dp"
+                android:background="@drawable/button_border"> <!-- Apply border and background -->
 
-        </RelativeLayout>
+                <!-- Fixed text label -->
+                <TextView
+                    android:id="@+id/tvLocationNewsLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Location News With:"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="40dp"/>
 
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/keywords_container"
+                <!-- Dynamic rotating text (simulated with TextView for simplicity) -->
+                <TextView
+                    android:id="@+id/btn_location_news"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
+                    android:layout_below="@id/tvLocationNewsLabel"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:textSize="40sp"
+                    android:textColor="@color/primary" />
 
-            </ScrollView>
+            </RelativeLayout>
+        </FrameLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/keywords_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+        </ScrollView>
 
 
     </LinearLayout>

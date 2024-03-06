@@ -9,11 +9,15 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.initiatetech.initiate_news.R
 import com.initiatetech.initiate_news.databinding.FragmentNewsBinding
 import com.initiatetech.initiate_news.repository.KeywordRepository
 import com.initiatetech.initiate_news.repository.NewsRepository
 import com.initiatetech.initiate_news.viewmodel.KeywordViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,7 +42,10 @@ class NewsFragment : Fragment() {
 //    private var param1: String? = null
 //    private var param2: String? = null
 
-
+    private var _binding: FragmentNewsBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var viewModel: KeywordViewModel
+    private var keywordsRotationJob: Job? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +99,10 @@ class NewsFragment : Fragment() {
                     viewModel.removeKeyword(keyword)
                 }
                 keywordsContainer.addView(keywordView)
+
+                viewModel.keywords.observe(viewLifecycleOwner) { keywords ->
+                    updateRotatingKeywords(keywords)
+                }
             }
         }
 
@@ -100,8 +111,21 @@ class NewsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        keywordsRotationJob?.cancel()
     }
 
+    private fun updateRotatingKeywords(keywords: List<String>) {
+        keywordsRotationJob?.cancel()
+        keywordsRotationJob = viewLifecycleOwner.lifecycleScope.launch {
+            var index = 0
+            while (true) {
+                val textToShow = if (keywords.isNotEmpty()) keywords[index % keywords.size] else "There is no keyword added"
+                binding.btnLocationNews?.text = textToShow
+                delay(1000) // Rotate
+                index++
+            }
+        }
+    }
 
     private fun navigateToSummarizeNewsFragment(keyword: String) {
         val fragment = SummarizeNewsFragment().apply {
