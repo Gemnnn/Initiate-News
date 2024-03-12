@@ -70,15 +70,14 @@ class KeywordViewModel(private val keywordRepository: KeywordRepository,
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.isSuccess == true) {
                         Log.d("Keyword", "addKeyword successful response")
-//                        Toast.makeText(context, "$keyword was added to your Home", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "$keyword was added to your Home", Toast.LENGTH_SHORT).show()
 
                         // Check to see if news for keyword already exists or not
                         keywordHasNoNews(newKeyword) { hasNoNews ->
                             if (hasNoNews) {
                                 Log.d("Keyword", "keyword has no news, generating news now")
-                                // If true then the new Keyword has no news, add function to generate news here?
-                                // TODO("Implement stuff to generate news for this new keyword")
 
+                                // If true then the new Keyword has no news, add function to generate news here
                                 getFirstKeywordNews(_username, keyword)
                             }
                         }
