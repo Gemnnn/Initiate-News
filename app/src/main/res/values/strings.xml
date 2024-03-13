@@ -20,6 +20,13 @@
     <!-- Search View -->
     <string name="addkeyword">Add Keyword</string>
 
+    <!-- Friend View -->
+    <string name="friends">Friends</string>
+    <string name="friendsList">Friends List</string>
+    <string name="addFriend">Add Friend</string>
+    <string name="friendName">Friend Name</string>
+    <string name="pending">Pending</string>
+
     <!-- User View -->
     <string name="preference">Update Preference</string>
     <string name="logout">Logout</string>

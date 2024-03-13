@@ -12,4 +12,6 @@
     <color name="ThirdPrimary">#4B4B4B</color>
 
     <color name="blue">#0000EE</color>
+
+    <color name="pending">#FB8C00</color>
 </resources>
