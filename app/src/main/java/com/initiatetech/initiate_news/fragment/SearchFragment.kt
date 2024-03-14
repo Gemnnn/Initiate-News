@@ -1,15 +1,19 @@
 package com.initiatetech.initiate_news.fragment
 
+import LoadingDialogFragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.initiatetech.initiate_news.databinding.FragmentSearchBinding
 import com.initiatetech.initiate_news.repository.KeywordRepository
 import com.initiatetech.initiate_news.repository.NewsRepository
 import com.initiatetech.initiate_news.viewmodel.KeywordViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 private var _binding : FragmentSearchBinding? = null
@@ -52,9 +56,22 @@ class SearchFragment : Fragment() {
             if (keyword.isNotEmpty()) {
                 viewModel.addKeyword(keyword)
                 binding.etAddKeyword.text.clear() // Clear the EditText after adding
+
+
+            }
+
+            val loadingDialog = LoadingDialogFragment.newInstance()
+            loadingDialog.isCancelable = false
+            loadingDialog.show(parentFragmentManager, "LoadingDialog")
+
+            // Wait for 13 seconds
+            lifecycleScope.launch {
+                delay(13000) // 13 seconds
+                loadingDialog.dismiss()
             }
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
