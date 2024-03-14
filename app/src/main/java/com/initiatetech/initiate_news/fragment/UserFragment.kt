@@ -302,13 +302,5 @@ class UserFragment : Fragment() {
 
 
 
-//    private fun getUserEmail(): String? {
-//        val sharedPreferences = activity?.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-//        return sharedPreferences?.getString("UserEmail", "")
-//    }
-
-
-
-
 
 }

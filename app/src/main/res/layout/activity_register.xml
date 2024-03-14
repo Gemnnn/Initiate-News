@@ -6,12 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".register.RegisterActivity">
 
+    <TextView
+        android:id="@+id/tv_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:text="Sing Up"
+        android:padding="22dp"/>
+
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email Address"
         android:inputType="textEmailAddress"
+        android:layout_below="@id/tv_signup"
         android:layout_margin="16dp"/>
 
     <EditText
