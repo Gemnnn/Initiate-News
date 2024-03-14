@@ -19,6 +19,7 @@ class NewsTimelineAdapter(private val onTitleClick: (String) -> Unit) : Recycler
         notifyDataSetChanged()
     }
 
+
     override fun getItemViewType(position: Int): Int {
         return if (position % 2 == 0) VIEW_TYPE_LEFT else VIEW_TYPE_RIGHT
     }

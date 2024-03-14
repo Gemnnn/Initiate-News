@@ -76,6 +76,11 @@ class UserViewModel(private val userRepository: UserRepository,
         return sharedPref?.getString("user_email", null)
     }
 
+    fun getProvince(): String {
+        val sharedPref = contextRef.get()?.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+        return sharedPref?.getString("user_province", "Unknown Province") ?: "Unknown Province"
+    }
+
     fun logoutUser() {
         userRepository.logoutUser().enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
@@ -122,7 +127,11 @@ class UserViewModel(private val userRepository: UserRepository,
             RetrofitClient.instance.getPreferences(userEmail).enqueue(object : Callback<PreferenceResponse> {
                 override fun onResponse(call: Call<PreferenceResponse>, response: Response<PreferenceResponse>) {
                     if (response.isSuccessful) {
-                        // Directly pass the PreferenceResponse object to the callback
+                        response.body()?.let {
+                            // Check for null and provide a default value if needed
+                            val province = it.province ?: "Unknown Province"
+                            saveProvince(province)
+                        }
                         callback(response.body())
                     } else {
                         callback(null)
@@ -139,6 +148,7 @@ class UserViewModel(private val userRepository: UserRepository,
     }
 
 
+
     fun setPreferences(language: String, province: String, country: String, newsGenerationTime: String, isSetPreference: Boolean) {
         val preferences = PreferenceData(language, province, country, newsGenerationTime, getUserEmail(), isSetPreference)
         Log.d("Preferences", "setPreferences Start")
@@ -147,6 +157,7 @@ class UserViewModel(private val userRepository: UserRepository,
                 if (response.isSuccessful && response.body()?.isSuccess == true) {
                     Log.d("Preferences", "setPreferences Successful response")
                     preferenceUpdateStatus.postValue(true)
+                    saveProvince(province)
                 } else {
                     Log.d("Preferences", "setPreferences failed response")
                     preferenceUpdateStatus.postValue(false)
@@ -158,6 +169,14 @@ class UserViewModel(private val userRepository: UserRepository,
                 preferenceUpdateStatus.postValue(false)
             }
         })
+    }
+
+    private fun saveProvince(province: String) {
+        val sharedPref = contextRef.get()?.getSharedPreferences("my_prefs", Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putString("user_province", province)
+            apply()
+        }
     }
 
     enum class LoginStatus {

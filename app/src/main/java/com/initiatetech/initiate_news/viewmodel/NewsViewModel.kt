@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.initiatetech.initiate_news.model.LocationNewsResponse
 import com.initiatetech.initiate_news.model.NewsDetailResponse
 import com.initiatetech.initiate_news.model.NewsResponse
 import com.initiatetech.initiate_news.repository.NewsRepository
@@ -18,6 +19,9 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
 
     private val _newsDetail = MutableLiveData<NewsDetailResponse?>()
     val newsDetail: LiveData<NewsDetailResponse?> = _newsDetail
+
+    private val _locationNewsItems = MutableLiveData<List<LocationNewsResponse>>()
+    val locationNewsItems: LiveData<List<LocationNewsResponse>> = _locationNewsItems
 
     private val _isFetchingData = MutableLiveData<Boolean>()
     fun fetchNewsForKeyword(username: String, keyword: String) {
@@ -66,4 +70,25 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
             throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
+
+    fun loadLocationBasedNews(username: String, location: String) {
+        _isFetchingData.value = true
+        newsRepository.getAllLocationNews(username, location).enqueue(object : Callback<List<LocationNewsResponse>> {
+            override fun onResponse(call: Call<List<LocationNewsResponse>>, response: Response<List<LocationNewsResponse>>) {
+                if (response.isSuccessful) {
+                    _locationNewsItems.postValue(response.body() ?: emptyList())
+                } else {
+                    // Log error or handle it as needed
+                    _newsItems.postValue(emptyList())
+                }
+                _isFetchingData.value = false
+            }
+
+            override fun onFailure(call: Call<List<LocationNewsResponse>>, t: Throwable) {
+                // Log error or handle it as needed
+                _isFetchingData.value = false
+            }
+        })
+    }
+
 }
