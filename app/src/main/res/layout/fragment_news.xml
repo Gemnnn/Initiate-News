@@ -6,7 +6,7 @@
         android:layout_height="match_parent">
 
         <FrameLayout
-            android:id="@+id/buttonContainer"
+            android:id="@+id/location_news"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -15,6 +15,7 @@
             android:padding="10dp">
 
             <RelativeLayout
+                android:id="@+id/btn_location_news"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="@drawable/button_border"> <!-- Apply border and background -->
@@ -32,7 +33,7 @@
 
                 <!-- Dynamic rotating text (simulated with TextView for simplicity) -->
                 <TextView
-                    android:id="@+id/btn_location_news"
+                    android:id="@+id/tv_location_news"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvLocationNewsLabel"
