@@ -33,4 +33,9 @@
 
     <!--Keyword View-->
     <string name="remove_keyword">Remove Keyword</string>
+
+    <!-- Registration Activity -->
+    <string name="empty_registration_err_msg">Email and password cannot be empty</string>
+    <string name="invalid_email_err_msg">Invalid email format</string>
+
 </resources>
