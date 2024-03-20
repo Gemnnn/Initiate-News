@@ -92,7 +92,7 @@ class LocationNewsFragment : Fragment() {
     }
     class CustomSmoothScroller(context: Context) : LinearSmoothScroller(context) {
         override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
-            return 300f / displayMetrics.densityDpi
+            return 50f / displayMetrics.densityDpi
         }
     }
 

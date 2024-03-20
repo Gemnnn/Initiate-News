@@ -64,7 +64,7 @@
             android:textAppearance="?attr/textAppearanceListItem"
             android:textSize="18sp"
             android:paddingLeft="5dp"
-            android:background="@drawable/news_title_shape" />
+            android:background="@drawable/location_news_title_shape" />
 
         <TextView
             android:id="@+id/tvDate"
