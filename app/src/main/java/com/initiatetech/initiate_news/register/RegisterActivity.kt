@@ -72,9 +72,9 @@ class RegisterActivity : AppCompatActivity() {
 
         // Example validation, adjust according to your requirements
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.empty_registration_err_msg, Toast.LENGTH_SHORT).show()
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Invalid email format", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.invalid_email_err_msg, Toast.LENGTH_SHORT).show()
         } else if (password.length < 6) { // Example minimum length
             Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
         } else if (!password.matches(".*[A-Z].*".toRegex())) {
