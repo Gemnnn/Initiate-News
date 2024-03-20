@@ -5,6 +5,11 @@
     <color name="colorDivision">#e0e0e0</color>
     <color name="colorNavIcon">#1d1d1d</color>
 
+    <color name="red">#AD1B1B</color>
+
     <color name="primary">#F6C30A</color>
     <color name="SecondPrimary">#2B2B2B</color>
+    <color name="ThirdPrimary">#4B4B4B</color>
+
+    <color name="blue">#0000EE</color>
 </resources>

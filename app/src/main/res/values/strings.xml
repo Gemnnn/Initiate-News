@@ -15,6 +15,7 @@
 
     <!-- News View -->
     <string name="lbns">Location Based News Summarization</string>
+    <string name="no_news_message">There is no news related to the %1$s.</string>
 
     <!-- Search View -->
     <string name="addkeyword">Add Keyword</string>
@@ -29,6 +30,9 @@
         <item>French</item>
         <!-- Add other languages as needed -->
     </string-array>
+
+    <!--Keyword View-->
+    <string name="remove_keyword">Remove Keyword</string>
 
     <!-- Registration Activity -->
     <string name="empty_registration_err_msg">Email and password cannot be empty</string>

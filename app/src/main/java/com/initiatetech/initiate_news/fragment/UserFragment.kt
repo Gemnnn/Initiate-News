@@ -3,7 +3,6 @@ package com.initiatetech.initiate_news.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
@@ -116,8 +115,8 @@ class UserFragment : Fragment() {
         binding.btnSetPreference.setOnClickListener {
             val selectedPosition = binding.spinnerLanguage.selectedItemPosition
             val language: String = binding.spinnerLanguage.getItemAtPosition(selectedPosition).toString().lowercase()
-            val province: String = userProvince ?: "" // Assuming you've stored userProvince as described earlier
-            val country: String = userCountry ?: "" // Assuming you've stored userCountry as described earlier
+            val province: String = userProvince ?: ""
+            val country: String = userCountry ?: ""
             val newsGenerationTime: String = binding.etSetTime.text.toString().trim()
             val isSetPreference = true
 
@@ -264,13 +263,12 @@ class UserFragment : Fragment() {
 
 
 
-    // UserFragment.kt
     private fun fetchDisplayPreferences() {
         viewModel.getPreferences { preferenceResponse ->
             preferenceResponse?.let {
                 activity?.runOnUiThread {
                     // Assuming the email is part of the PreferenceResponse
-                    binding.tvUserEmail.text = it.email ?: "Email not found"
+                    binding.tvUserEmail.text = viewModel.getUserEmail() ?: "Email not found"
 
 
                     userCountry = it.country // Update global variable
@@ -301,14 +299,6 @@ class UserFragment : Fragment() {
             }
         }
     }
-
-
-
-    private fun getUserEmail(): String? {
-        val sharedPreferences = activity?.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-        return sharedPreferences?.getString("UserEmail", "")
-    }
-
 
 
 

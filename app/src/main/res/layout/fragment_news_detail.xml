@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="350dp"
+    android:layout_height="600dp"
+    android:layout_gravity="center"
+    app:cardCornerRadius="8dp"
+    android:padding="16dp"
+    android:background="@color/ThirdPrimary"
+    android:orientation="vertical">
+
+
+    <!-- News Title -->
+    <TextView
+        android:id="@+id/tvNewsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="News Title will appear here"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"/>
+
+    <!-- News Short Title -->
+    <TextView
+        android:id="@+id/tvNewsShortTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Short Title"
+        android:textColor="@color/white"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tvNewsTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- News Source -->
+    <TextView
+        android:id="@+id/tvNewsSource"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Source URL"
+        android:textColor="@color/blue"
+
+        android:clickable="true"
+        android:autoLink="web"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tvNewsShortTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Published Date and Author -->
+    <TextView
+        android:id="@+id/tvPublishedDateAuthor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Published Date / Author"
+        android:textColor="@color/white"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tvNewsSource"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- News Content -->
+    <TextView
+        android:id="@+id/tvNewsContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="News Content will appear here with more details. This is a detailed description of the news."
+        android:textColor="@color/white"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvPublishedDateAuthor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

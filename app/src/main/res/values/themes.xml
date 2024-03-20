@@ -13,7 +13,31 @@
 
         <!-- Status bar color-->
         <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="Theme.InitiateNews" parent="Base.Theme.InitiateNews" />
+
+
+    <style name="NewsDetailDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <!-- Customize your dialog style here -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your splash theme here -->
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+
+
+
 </resources>
