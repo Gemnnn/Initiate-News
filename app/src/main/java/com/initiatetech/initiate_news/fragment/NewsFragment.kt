@@ -103,6 +103,7 @@ class NewsFragment : Fragment() {
         keywordViewModel.keywords.observe(viewLifecycleOwner) { keywords ->
             val keywordsContainer = binding.keywordsContainer
             keywordsContainer.removeAllViews()
+            updateRotatingKeywords(keywords)
 
             keywords.forEach { keyword ->
                 val keywordView = LayoutInflater.from(context).inflate(R.layout.keyword_item, keywordsContainer, false)
@@ -131,6 +132,7 @@ class NewsFragment : Fragment() {
         binding.btnLocationNews.setOnClickListener {
             navigateToLocationNewsFragment(userViewModel.getProvince())
         }
+
     }
 
     override fun onDestroyView() {
