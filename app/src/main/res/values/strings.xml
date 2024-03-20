@@ -26,6 +26,8 @@
     <string name="addFriend">Add Friend</string>
     <string name="friendName">Friend Name</string>
     <string name="pending">Pending</string>
+    <string name="message">Message</string>
+    <string name="remove_friend">Remove Friend</string>
 
     <!-- User View -->
     <string name="preference">Update Preference</string>
