@@ -22,7 +22,7 @@ class LoginActivityTests {
     val intentsTestRule = IntentsTestRule(LoginActivity::class.java)
 
     @Test
-    fun testLoginSuccess() {
+    fun TC_LOGIN_001_LoginSuccess() {
         // Enter valid email and password
         onView(withId(R.id.et_email)).perform(typeText("test@gmail.com"))
         closeSoftKeyboard()
@@ -40,16 +40,7 @@ class LoginActivityTests {
     }
 
     @Test
-    fun testLoginFailEmptyEmailAndPassword() {
-        // Click login
-        onView(withId(R.id.btn_login)).perform(click())
-
-        // Assert that there is no intent because login failed with empty email/password
-        assertThat(Intents.getIntents()).isEmpty()
-    }
-
-    @Test
-    fun testLoginFailIncorrectEmail() {
+    fun TC_LOGIN_002_LoginFailIncorrectEmail() {
         // Enter incorrect email
         onView(withId(R.id.et_email)).perform(typeText("wrong_email"))
         closeSoftKeyboard()
@@ -64,4 +55,30 @@ class LoginActivityTests {
         // Assert that there is no intent because login failed with incorrect email
         assertThat(Intents.getIntents()).isEmpty()
     }
+
+    fun TC_LOGIN_003_LoginFailIncorrectPassword() {
+        // Enter incorrect email
+        onView(withId(R.id.et_email)).perform(typeText("test@gmail.com"))
+        closeSoftKeyboard()
+
+        // Enter valid password
+        onView(withId(R.id.et_password)).perform(typeText("12341234"))
+        closeSoftKeyboard()
+
+        // Click login
+        onView(withId(R.id.btn_login)).perform(click())
+
+        // Assert that there is no intent because login failed with incorrect email
+        assertThat(Intents.getIntents()).isEmpty()
+    }
+
+    @Test
+    fun TC_LOGIN_004_LoginFailEmptyEmailAndPassword() {
+        // Click login
+        onView(withId(R.id.btn_login)).perform(click())
+
+        // Assert that there is no intent because login failed with empty email/password
+        assertThat(Intents.getIntents()).isEmpty()
+    }
+
 }
