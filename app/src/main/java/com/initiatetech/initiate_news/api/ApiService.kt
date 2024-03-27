@@ -3,6 +3,7 @@ package com.initiatetech.initiate_news.api
 import com.initiatetech.initiate_news.model.AcceptKeyword
 import com.initiatetech.initiate_news.model.ApiResponse
 import com.initiatetech.initiate_news.model.FriendResponse
+import com.initiatetech.initiate_news.model.FriendUsername
 import com.initiatetech.initiate_news.model.Keyword
 import com.initiatetech.initiate_news.model.KeywordResponse
 import com.initiatetech.initiate_news.model.NewsDetailResponse
@@ -15,6 +16,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -70,22 +72,22 @@ interface ApiService {
     fun getAllFriends(@Path("username") username: String): Call<List<FriendResponse>>
 
     @POST("api/Friend/{username}")
-    fun requestFriend(@Path("username") username: String, @Body friendUsername: String): Call<ApiResponse>
+    fun requestFriend(@Path("username") username: String, @Body friendUsername: FriendUsername): Call<ApiResponse>
 
     @PUT("api/Friend/{username}")
-    fun acceptFriend(@Path("username") username: String, @Body friendUsername: String): Call<ApiResponse>
+    fun acceptFriend(@Path("username") username: String, @Body friendUsername: FriendUsername): Call<ApiResponse>
 
-    @DELETE("api/Friend/{username}")
-    fun rejectFriend(@Path("username") username: String, @Body friendUsername: String): Call<ApiResponse>
+    @HTTP(method = "DELETE", path = "api/Friend/{username}", hasBody = true)
+    fun rejectFriend(@Path("username") username: String, @Body friendUsername: FriendUsername): Call<ApiResponse>
 
 
     // Share Keyword Calls
     @GET("api/ShareKeyword/{username}")
-    fun getSharedKeywords(@Path("username") username: String)
+    fun getSharedKeywords(@Path("username") username: String): Call<List<SharedKeyword>>
 
     @POST("api/ShareKeyword")
-    fun shareKeyword(@Body sharedKeyword: SharedKeyword)
+    fun shareKeyword(@Body sharedKeyword: SharedKeyword): Call<ApiResponse>
 
     @PUT("api/ShareKeyword")
-    fun acceptOrRejectKeyword(@Body acceptKeyword: AcceptKeyword)
+    fun acceptOrRejectKeyword(@Body acceptKeyword: AcceptKeyword): Call<ApiResponse>
 }

@@ -19,17 +19,45 @@
         </RelativeLayout>
 
 
-            <ScrollView
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginBottom="60dp"
+                android:background="@drawable/friend_list_border">
 
-                <LinearLayout
-                    android:id="@+id/keywords_container"
+                <ScrollView
+                    android:id="@+id/keyword_scrollview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp">
 
-            </ScrollView>
+                    <LinearLayout
+                        android:id="@+id/keywords_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"/>
+
+                </ScrollView>
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_sharedKeywords"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:backgroundTint="@color/primary"
+                android:text="@string/shared_keywords"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+        </RelativeLayout>
 
 
     </LinearLayout>

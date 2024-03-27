@@ -9,11 +9,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.initiatetech.initiate_news.model.ApiResponse
 import com.initiatetech.initiate_news.model.FriendResponse
+import com.initiatetech.initiate_news.model.FriendUsername
 import com.initiatetech.initiate_news.repository.FriendRepository
+import com.initiatetech.initiate_news.repository.SharedKeywordRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.ref.WeakReference
+
+// TODO: Fix this
+//class FriendViewModel(private val friendRepository: FriendRepository,
+//                      private val sharedKeywordViewModel: SharedKeywordViewModel,
+//                      context: Context?) : ViewModel() {
 
 class FriendViewModel(private val friendRepository: FriendRepository,
                       context: Context?) : ViewModel() {
@@ -59,9 +66,10 @@ class FriendViewModel(private val friendRepository: FriendRepository,
         }
     }
 
-    fun addFriend(friendUsername: String) {
+    fun addFriend(friend: String) {
         // Send friend request
         if (_username != null) {
+            val friendUsername = FriendUsername(friend)
             friendRepository.requestFriend(_username, friendUsername).enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.isSuccess == true) {
@@ -84,8 +92,9 @@ class FriendViewModel(private val friendRepository: FriendRepository,
         }
     }
 
-    fun acceptFriend(friendUsername: String) {
+    fun acceptFriend(friend: String) {
         if (_username != null) {
+            val friendUsername = FriendUsername(friend)
             friendRepository.acceptFriend(_username, friendUsername).enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.isSuccess == true) {
@@ -108,8 +117,9 @@ class FriendViewModel(private val friendRepository: FriendRepository,
         }
     }
 
-    fun rejectFriend(friendUsername: String) {
+    fun rejectFriend(friend: String) {
         if (_username != null) {
+            val friendUsername = FriendUsername(friend)
             friendRepository.rejectFriend(_username, friendUsername).enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                     if (response.isSuccessful && response.body()?.isSuccess == true) {
@@ -119,8 +129,8 @@ class FriendViewModel(private val friendRepository: FriendRepository,
                         getAllFriends()
                     } else {
                         val errorMessage = response.errorBody()?.string() ?: "Unknown error"
-                        Log.d("Friend", "rejectFriend failed response")
-                        Toast.makeText(context, "Your friend request from $friendUsername was not rejected: $errorMessage", Toast.LENGTH_SHORT).show()
+                        Log.d("Friend", "rejectFriend failed response: $errorMessage")
+                        Toast.makeText(context, "Your friend request from $friendUsername was not rejected $errorMessage", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -132,9 +142,14 @@ class FriendViewModel(private val friendRepository: FriendRepository,
         }
     }
 
-    fun messageFriend() {
-        // TODO: Add code for sending a message to selected friend?
+    fun share() {
+        // TODO: Add code for sharing a keyword with a friend
 
+        // Open a dialog to select a keyword to share with send/cancel buttons
+
+        // Open dialog
+        // Fill dialog with keywords via getAllKeywords()
+        // Click submit/share button that calls shareKeyword()
     }
 
     private fun getUserEmail(): String? {
@@ -142,12 +157,19 @@ class FriendViewModel(private val friendRepository: FriendRepository,
         return sharedPref?.getString("user_email", null)
     }
 
+
+    // TODO: Fix this
+//    class FriendViewModelFactory(private val friendRepository: FriendRepository,
+//                                 private val sharedKeywordViewModel: SharedKeywordViewModel,
+//                                 private val context: Context?) :
     class FriendViewModelFactory(private val friendRepository: FriendRepository,
                                  private val context: Context?) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(FriendViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
+                // TODO: Fix this
+//                return FriendViewModel(friendRepository, sharedKeywordViewModel, context) as T
                 return FriendViewModel(friendRepository, context) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")

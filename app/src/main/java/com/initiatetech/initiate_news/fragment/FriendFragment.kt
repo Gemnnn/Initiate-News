@@ -1,6 +1,7 @@
 package com.initiatetech.initiate_news.fragment
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,14 +9,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.initiatetech.initiate_news.R
 import com.initiatetech.initiate_news.databinding.FragmentFriendBinding
 import com.initiatetech.initiate_news.login.LoginActivity
 import com.initiatetech.initiate_news.repository.FriendRepository
+import com.initiatetech.initiate_news.repository.SharedKeywordRepository
 import com.initiatetech.initiate_news.viewmodel.FriendViewModel
+import com.initiatetech.initiate_news.viewmodel.SharedKeywordViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +30,7 @@ private const val ARG_PARAM2 = "param2"
 private var _binding: FragmentFriendBinding? = null
 private val binding get() = _binding!!
 private lateinit var viewModel: FriendViewModel
+private lateinit var shareViewModel: SharedKeywordViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -53,7 +59,15 @@ class FriendFragment : Fragment() {
 
         _binding = FragmentFriendBinding.inflate(inflater, container, false)
 
-        // Initialize the ViewModel
+        // TODO: Fix this
+        // Initialize the SharedKeywordViewModel
+//        val shareFactory = SharedKeywordViewModel.SharedKeywordViewModelFactory(SharedKeywordRepository(), context)
+//        shareViewModel = ViewModelProvider(this, shareFactory).get(SharedKeywordViewModel::class.java)
+//
+//        // Initialize the ViewModel
+//        val factory = FriendViewModel.FriendViewModelFactory(FriendRepository(), shareViewModel, context)
+//        viewModel = ViewModelProvider(this, factory).get(FriendViewModel::class.java)
+
         val factory = FriendViewModel.FriendViewModelFactory(FriendRepository(), context)
         viewModel = ViewModelProvider(this, factory).get(FriendViewModel::class.java)
 
@@ -82,26 +96,33 @@ class FriendFragment : Fragment() {
             friends.forEach { friend ->
                 val friendView = LayoutInflater.from(context).inflate(R.layout.friend_item, friendsListContainer, false)
                 val tvFriend = friendView.findViewById<TextView>(R.id.txt_friend_name)
-                val btnFriendStatus = friendView.findViewById<Button>(R.id.btn_friendStatus)
+                val btnFriendStatus = friendView.findViewById<AppCompatButton>(R.id.btn_friendStatus)
 
                 tvFriend.text = friend.friendUsername
 
-                if (friend.status != pending) {
-                    btnFriendStatus.setBackgroundColor(requireContext().getColor(R.color.primary))
-                    btnFriendStatus.setText(R.string.message)
+                if (friend.status != pending) { // If request has been accepted...
+                    btnFriendStatus.backgroundTintList = ColorStateList.valueOf(requireContext().getColor(R.color.primary))
+                    btnFriendStatus.setText(R.string.share)
 
-                    // Set up the message button
                     btnFriendStatus.setOnClickListener {
-                        //viewModel.sendMessage()
+                        viewModel.share()
                     }
-                } else {
-                    btnFriendStatus.setBackgroundColor(requireContext().getColor(R.color.pending))
-                    //btnFriendStatus.setBackgroundColor(resources.getColor(R.color.pending))
+
+                } else if (friend.isRequestedByCurrentUser) { // If user sent the request...
+                    btnFriendStatus.backgroundTintList = ColorStateList.valueOf(requireContext().getColor(R.color.pending))
                     btnFriendStatus.setText(R.string.pending)
+
+                } else { // Else the user is the un-accepted receiver
+                    btnFriendStatus.backgroundTintList = ColorStateList.valueOf(requireContext().getColor(R.color.accept))
+                    btnFriendStatus.setText(R.string.accept)
+
+                    btnFriendStatus.setOnClickListener {
+                        viewModel.acceptFriend(friend.friendUsername)
+                    }
                 }
 
                 // Set up the remove friend 'X' button
-                val btnRemoveFriend = friendView.findViewById<Button>(R.id.btn_removeFriend)
+                val btnRemoveFriend = friendView.findViewById<ImageButton>(R.id.btn_removeFriend)
                 btnRemoveFriend.setOnClickListener {
                     // Remove the friend/friendRequest
                     viewModel.rejectFriend(friend.friendUsername)

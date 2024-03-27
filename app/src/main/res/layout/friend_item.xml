@@ -5,19 +5,21 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="10dp"
+        android:layout_alignParentStart="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="4dp">
+        android:padding="4dp"
+        android:layout_toStartOf="@+id/btn_friendStatus">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@color/primary"
             android:src="@drawable/ic_person"
             app:tint="@color/ThirdPrimary" />
@@ -27,31 +29,32 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:gravity="center_vertical"
-            android:paddingStart="8dp"
+            android:paddingStart="5dp"
             android:text="@string/friendName"
-            android:textSize="16sp" />
+            android:textSize="13sp" />
 
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_friendStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pending"
-        android:layout_alignParentEnd="true"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="45dp"
-        android:textAllCaps="false"
+        android:layout_marginEnd="0dp"
+        android:layout_toStartOf="@+id/btn_removeFriend"
         android:backgroundTint="@color/pending"
-        android:textColor="@color/white"/>
+        android:text="@string/pending"
+        android:textSize="12sp"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
 
     <ImageButton
         android:id="@+id/btn_removeFriend"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="0dp"
+        android:layout_marginEnd="5dp"
         android:src="@android:drawable/ic_delete"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/remove_keyword"

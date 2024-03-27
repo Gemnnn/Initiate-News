@@ -16,6 +16,7 @@
     <!-- News View -->
     <string name="lbns">Location Based News Summarization</string>
     <string name="no_news_message">There is no news related to the %1$s.</string>
+    <string name="shared_keywords">Shared Keywords</string>
 
     <!-- Search View -->
     <string name="addkeyword">Add Keyword</string>
@@ -26,7 +27,8 @@
     <string name="addFriend">Add Friend</string>
     <string name="friendName">Friend Name</string>
     <string name="pending">Pending</string>
-    <string name="message">Message</string>
+    <string name="accept">Accept</string>
+    <string name="share">Share</string>
     <string name="remove_friend">Remove Friend</string>
 
     <!-- User View -->

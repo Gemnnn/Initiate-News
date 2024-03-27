@@ -7,7 +7,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="50dp">
 
             <TextView
                 android:id="@+id/txt_friendsTitle"
@@ -64,12 +64,16 @@
                 android:textStyle="bold" />
         </RelativeLayout>
 
-        <!-- Could use recyclerview instead? -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/friend_list_border"
+            android:layout_margin="5dp">
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:background="@drawable/friend_list_border">
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp">
 
             <LinearLayout
                 android:id="@+id/friends_list_container"
@@ -78,6 +82,7 @@
                 android:orientation="vertical"/>
 
         </ScrollView>
+        </RelativeLayout>
 
     </LinearLayout>
 </layout>
