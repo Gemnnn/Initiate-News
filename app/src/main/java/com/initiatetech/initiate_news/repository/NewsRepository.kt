@@ -13,4 +13,6 @@ class NewsRepository {
     // All location News
     fun getAllLocationNews(username: String, location: String) = RetrofitClient.instance.getAllLocationNews(username, location)
 
+    fun getFirstLocationNews(username: String, keyword: String) = RetrofitClient.instance.getFirstLocationNews(username, keyword)
+
 }

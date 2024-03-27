@@ -66,5 +66,6 @@ interface ApiService {
     @GET("api/News/location/{username}/{keyword}")
     fun getAllLocationNews(@Path("username") username: String, @Path("keyword") keyword: String): Call<List<LocationNewsResponse>>
 
-
+    @GET("api/News/firstLocation/{username}/{keyword}")
+    fun getFirstLocationNews(@Path("username") username: String, @Path("keyword") keyword: String): Call<List<LocationNewsResponse>>
 }

@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.initiatetech.initiate_news.model.ApiResponse
 import com.initiatetech.initiate_news.model.Keyword
 import com.initiatetech.initiate_news.model.KeywordResponse
+import com.initiatetech.initiate_news.model.LocationNewsResponse
 import com.initiatetech.initiate_news.model.NewsResponse
 import com.initiatetech.initiate_news.repository.KeywordRepository
 import com.initiatetech.initiate_news.repository.NewsRepository
@@ -164,6 +165,24 @@ class KeywordViewModel(private val keywordRepository: KeywordRepository,
 
             override fun onFailure(call: Call<List<NewsResponse>>, t: Throwable) {
                 Log.e("News", "getFirstKeywordNews error", t)
+                Toast.makeText(context, "Loading $keyword news failed", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun getFirstLocationNews(username: String, keyword: String) {
+        newsRepository.getFirstLocationNews(username, keyword).enqueue(object : Callback<List<LocationNewsResponse>> {
+            override fun onResponse(call: Call<List<LocationNewsResponse>>, response: Response<List<LocationNewsResponse>>) {
+                if (response.isSuccessful && response.body()?.isNotEmpty() == true) {
+                    Log.d("News", "getFirstLocationNews successful response: location news loaded")
+                } else {
+                    Log.d("News", "getFirstLocationNews failed response: initial location news not loaded correctly")
+                    Toast.makeText(context, "$keyword news did not load correctly", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<LocationNewsResponse>>, t: Throwable) {
+                Log.e("News", "getFirstLocationNews error", t)
                 Toast.makeText(context, "Loading $keyword news failed", Toast.LENGTH_SHORT).show()
             }
         })
