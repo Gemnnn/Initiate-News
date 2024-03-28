@@ -6,7 +6,8 @@
         android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp">
             <ImageView
                 android:id="@+id/user_profile"
                 android:layout_width="100dp"
@@ -129,22 +130,27 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_margin="10dp"
+        <Button
             android:id="@+id/btn_set_preference"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/primary"
-            android:text="@string/preference" />
+            android:layout_height="wrap_content"
+            android:text="@string/preference"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:backgroundTint="@color/primary"/>
+
 
         <!-- TODO: Give this button a nicer colour? This red is a bit harsh maybe -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_margin="10dp"
+        <Button
             android:id="@+id/btn_logout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/design_default_color_error"
-            android:text="@string/logout" />
+            android:layout_height="wrap_content"
+            android:text="@string/logout"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:backgroundTint="@color/design_default_color_error"/>
 
     </LinearLayout>
 </layout>

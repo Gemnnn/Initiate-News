@@ -35,7 +35,6 @@ class SummarizeNewsFragmentTests {
         // Check that the RecyclerView with news list is displayed
         onView(withId(R.id.rv_timeline)).check(matches(isDisplayed()))
 
-        // Optionally, perform more checks, e.g., check that the list is not empty
     }
 
     @Test

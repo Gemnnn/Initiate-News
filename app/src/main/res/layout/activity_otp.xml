@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".register.RegisterActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="24dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,7 +18,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="300dp"
+        android:layout_marginTop="24dp">
         <ImageView
             android:layout_width="300dp"
             android:layout_height="300dp"
